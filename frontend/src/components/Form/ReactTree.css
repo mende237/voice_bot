@@ -1,0 +1,70 @@
+.pdL3 {
+    padding-left: 3vw !important;
+  }
+  .pdL1 {
+    padding-left: 1vw !important;
+  }
+  .pdT1 {
+    padding-top: 1vh !important;
+  }
+  .pdT2 {
+    padding-top: 2vh !important;
+  }
+  .pdB2 {
+    padding-bottom: 2vh !important;
+  }
+  
+  
+  .mrL1 {
+    margin-left: 1vw !important;
+  }
+  .mrL3 {
+    margin-left: 3vw !important;
+  }
+  .mrT1 {
+    margin-top: 1vh !important;
+  }
+  .mrB2 {
+    margin-bottom: 2vh !important;
+  }
+  
+  .hr-line {
+    min-width: 16px;
+    float: left;
+  }
+  .react-tree-container {
+    padding-left: 2vw;
+  }
+  .empty-div {
+    border-left: 2px solid black;
+    left: 3% !important;
+    top: 1%;
+    position: absolute;
+    min-height: 4vh;
+  }
+  
+  .drop_icon {
+    display: inline-block;
+    padding-right: 8px;
+    margin-left: -22px;
+    cursor: pointer;
+  }
+  
+  .tree-row {
+    display: inline-block;
+  }
+  
+  .react-tree-input > input {
+    border: 1px solid #ccc; 
+    padding: 7px 14px 9px; 
+    transition: 0.4s;
+  }
+  
+  .react-tree-btn{
+    padding: 8px;
+  }
+  
+  .react-tree-btn > button{
+    border-radius: 3px solid #ccc;
+    margin: 4px;
+  }
