@@ -1,0 +1,4 @@
+backend/voiceBot/*/asgi.py
+backend/voiceBot/*/wsgi.py
+backend/voiceBot/*/__p*
+backend/voiceBot/*/migrations
