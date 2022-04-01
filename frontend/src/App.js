@@ -7,7 +7,7 @@ import Test from './components/Form/Test';
 
 function App() {
   return (
-  <Test></Test>
+  <SideBar></SideBar> 
   );
 }
 
