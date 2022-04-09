@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block corps %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Listes des noeuds</h1>
+            {% if noeuds %}
+            <ul>
+                {% for noeud in noeuds %}
+                <li>
+                    {% if noeud.parent %}
+                        parent : {{ noeud.parent.id }}-{{ noeud.parent.nom }} /
+                    {% endif %}
+                    {{ noeud.id }}-{{ noeud.nom }}
+                </li>
+                {% empty %}
+                <li>
+                    <h2> Aucun noeuds disponibles</h2>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="col">
+            <form action="{% url 'adminin:add_noeud' %}" method="get">
+                {{crfs}}
+                <div>
+                    <label for="nom" class="visually-hidden"> nom </label>
+                    <input type="text" class="form-control" id="nom" placeholder="nom du nouveau noued" name ="nom">
+                </div>
+                <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="parent">
+                {% if noeuds %}
+                    {% for noeud in noeuds %}
+                    <option value="{{ noeud.id }}">{{ noeud.id }}-{{ noeud.nom }}</option>
+                    {% endfor %}
+                {% endif %} 
+                </select>
+                <div>
+                    <button type="submit" class="btn btn-primary mb-3">+ add node</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock%}

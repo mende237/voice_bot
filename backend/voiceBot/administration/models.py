@@ -8,18 +8,22 @@ TYPE_CHOICES = (
     ('4','ChaineDeCaractere'),
 )
 class Noeud(models.Model):
-    parent = models.ForeignKey('self', on_delete = models.CASCADE, blank=True)
+    parent = models.ForeignKey('self', on_delete = models.CASCADE, null=True)
     nom = models.CharField(max_length=50)
      
 class Feuille(Noeud):
     description = models.TextField(max_length=500, blank=True)
     CHEMIN_FILE_FORMAT_FORMULATION = ""
     
-    def genration_format_Formulation(self):
+    def generation_format_Formulation(self):
         pass
         
     def genration_Formulaire(self):
-        pass
+        attributs = self.get_caracteristique()
+        ch = ""
+        for att in attributs :
+            ch = ch + att.get_format_sur_formulaire()
+        return ch
         
     
 class Caracteristique(models.Model):
@@ -28,6 +32,7 @@ class Caracteristique(models.Model):
     feuille = models.ForeignKey(Feuille, on_delete=models.CASCADE)
     
     def get_format_sur_formulaire(self):
+        ch = "< input "
         pass
         
 class Administrateur(User):

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    
+    <!-- ICON -->
+    {% block icon %}
+    {% endblock %}
+    
+    
+    <title>{% block titre %}{% endblock %}</title>
+    
+    <!-- CSS -->
+    {% block style %}
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
+    {% endblock %}
+
+</head>
+
+<body>
+    <!-- LE PRELOADER -->
+    {% block preloader %}
+    {% endblock %}
+    
+    <!-- ENTETE -->
+    {% block entete %}
+    {% endblock %}
+        
+    <!-- CORPS -->
+    {% block corps %}
+    
+    {% endblock%}
+    
+    
+    <!-- PIED DE PAGE -->
+    {% block footer %}
+    {% endblock %}    
+    
+    {% block secondblock %}
+    {% endblock %}
+    
+    <!-- JS -->
+    {% block javascript %}
+    {% endblock %}
+</body>
+
+</html>
