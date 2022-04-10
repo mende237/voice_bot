@@ -14,10 +14,7 @@ def ajouter_noeud(request):
     if idParent !=  None :
         parent = get_object_or_404(Noeud, pk=int(idParent))
         new_node.parent = parent
-        
-
     new_node.save()
-    print(nom)
     return redirect('administration:listeNode')
     
 def indexNode(request):
