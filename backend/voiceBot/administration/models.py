@@ -10,6 +10,10 @@ TYPE_CHOICES = (
 class Noeud(models.Model):
     parent = models.ForeignKey('self', on_delete = models.CASCADE, null=True)
     nom = models.CharField(max_length=50)
+    
+    def tohtml(self):
+       
+        pass
      
 class Feuille(Noeud):
     description = models.TextField(max_length=500, blank=True)
@@ -38,8 +42,11 @@ class Caracteristique(models.Model):
 class Administrateur(User):
     image = models.ImageField(upload_to="uploads/user/admin/", blank=True)
     
-    def ajouter_un_noued(nom):
-        pass
+    def ajouter_un_noued(self,nom):
+        if self.is_authenticated :
+            return True
+        else :
+            return False
         
     def supprimer_un_noeud(noeud):
         pass
