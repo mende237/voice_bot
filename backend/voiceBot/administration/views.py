@@ -26,10 +26,16 @@ def indexNode(request):
     noeuds = Noeud.objects.all()
     noeud = noeuds[0]
     print(noeud,"-----------")
-    print(noeud.noeud_set.all())
+    print(len(noeud.noeud_set.all()))
     
     context={
         'noeuds' : noeuds,
     }
     return render(request, "node.html", context)
     
+def tohtml(noeud):
+    enfants = noeud.noeud_set.all()
+    n = len(enfants)
+    if(True):
+        pass
+    pass
