@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block corps %}
-{{ auth }}
-
-{% endblock%}
+<div class="container">
+    <div class="w-md-50 overflow-auto border-1 border border-primary p-3">
+        {% include 'hierarchie_for_admin.html' %}
+    </div>
+</div>
+{% endblock %}
