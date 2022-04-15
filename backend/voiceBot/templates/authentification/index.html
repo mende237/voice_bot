@@ -1,0 +1,93 @@
+
+
+<html></html>
+        {% load static %}
+
+
+        <title>Dashboard OnlineInformation</title>
+
+        <!-- Custom fonts for this template-->
+        <!-- Custom fonts for this template-->
+        <link href="{% static 'assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet' %}" type="text/css">
+        <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+        <!-- Custom styles for this template-->
+        <link rel="stylesheet" href=" {% static 'assets/css/sb-admin-2.min.css' %}">
+        <link rel="stylesheet" href=" {% static 'assets/css/mystyle.css' %}">
+    </head>
+
+    <body id="page-top">
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <!-- End of Sidebar -->
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <!-- Topbar -->
+                    <nav class="navbar bg-primary -expand navbar-light bg-white topbar mb-4 static-top shadow" >
+                          <div class="row">
+                            <h1 class="h3 mb-0 text-gray-800 "  >Welcome to easyInformation!</h1>
+                          </div>
+
+                    </nav>
+                    <!-- End of Topbar -->
+
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
+                        <!-- Content Row -->
+                        <div class="row">
+
+
+                            {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                <strong>Message:</strong> {{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            {% endfor %}
+
+
+                            {% if user.is_authenticated %}
+                            <h3>Hello {{fname}}!</h3>
+                            <h4>You're successfully logged in.</h4>
+
+                                <div class="container">
+                                    <button type="submit"><a href="/signout">SignOut</a></button>
+                                </div> {% else %}
+                                <div>
+                                    <div style="color: aqua;">
+                                        <button type="submit"><a href="/signup">SignUp</a></button>
+                                    </div>
+
+                                    <div>
+                                        <button type="submit"><a href="/signin">SignIn</a></button>
+                                    </div>
+    
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+                        <!-- End of Main Content -->
+
+
+                    </div>
+                    <!-- End of Content Wrapper -->
+
+                </div>
+
+
+
+    </body>
+
+
+</html>
