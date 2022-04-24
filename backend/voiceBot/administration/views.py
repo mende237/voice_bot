@@ -175,14 +175,18 @@ def node_tohtml(node):
                              <div class="btn d-inline-flex align-items-center gap-2">
                                  <i class="fa fa-leaf"></i> """ + nom + """
                              </div>
-                             <div class="d-flex text-center mx-2 bg-light"> """+form_delete+""" </div>
+                             <a class="fa fa-cog dropdown-toggle" data-bs-target="§_"""+str(node.id)+"""" role="button" data-bs-toggle="collapse" aria-expanded="false">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right animated--grow-in" id="§_"""+str(node.id)+"""""> """+str(node.id)+"""""> """+form_delete+""" </div>
                          </div> """
         # construction de la vue d'une noeud terminal
         return """ <div class="d-flex align-items-center justify-content-between">
                              <div class="btn d-inline-flex align-items-center ">
                                  <i class="fa fa-node"></i> """ + nom + """
                              </div>
-                             <div class="d-flex text-center mx-2 bg-light"> """+form_delete+form_add+form_define_feuille+""" </div>
+                             <a class="fa fa-cog dropdown-toggle" data-bs-target="§_"""+str(node.id)+"""" role="button" data-bs-toggle="collapse" aria-expanded="false">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right animated--grow-in" id="§_"""+str(node.id)+"""""> """+str(node.id)+"""""> """+form_delete+form_add+form_define_feuille+""" </div>
                          </div> """
 
     # contruction du html noeud
@@ -193,7 +197,9 @@ def node_tohtml(node):
                 <button class="btn d-inline-flex align-items-center collapsed rounded-0 gap-2" data-bs-toggle="collapse" data-bs-target="#__"""+str(node.id)+"""" aria-expanded="false">
                     """ + icon + nom + """
                 </button>
-                <div class="d-flex text-center mx-2 bg-light"> """+form_delete+form_add+form_define_feuille+"""</div>
+                <a class="fa fa-cog dropdown-toggle" data-bs-target="§_"""+str(node.id)+"""" role="button" data-bs-toggle="collapse" aria-expanded="false">
+                </a>
+                <div class="dropdown-menu dropdown-menu-right animated--grow-in" id="§_"""+str(node.id)+"""""> """+form_delete+form_add+form_define_feuille+"""</div>
              </div> """
 
     # > insertion des enfants
@@ -205,7 +211,6 @@ def node_tohtml(node):
     result += "</ul></div></ul>"
 
     return result
-
 
 def generate_hierachie():
     trees_visual = "{% load static %}\n"
