@@ -1,12 +1,12 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from json import dumps
+from django.urls import reverse
 
 from administration.models import Caracteristique, Feuille, Noeud
 
 
 def home(request):
     hierarchie = generate_hierachie()
-    return render(request, "home.html" , {'hierarchie' : hierarchie } )
+    return render(request, "home.html" , { 'hierarchie' : hierarchie} )
 
 
 def create_leaf(request):
@@ -110,7 +110,7 @@ def node_tohtml(node):
     n = len(children)
     nom = "<h5 class=\"m-0\">" + node.nom + "</h5>"
 
-    form_delete = """   <form action="{% url 'adminin:delete_noeud' %}" method="get" class = "w-100"> 
+    form_delete = """   <form action=" """ + reverse('adminin:delete_noeud') + """ " method="get" class = "w-100"> 
                            <input type="hidden" name="id" value=" """ + str(node.id) + """ ">
                            <button type="submit" class="w-100 btn btn-primary">supprimer</button>
                         </form>  """
@@ -126,7 +126,7 @@ def node_tohtml(node):
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-body">
-                                    <form action="{% url 'adminin:add_noeud' %}" class="m-1" method="get">
+                                    <form action=" """ + reverse('adminin:add_noeud') + """ " class="m-1" method="get">
                                         <input type="hidden" name="id" value=" """ + str(node.id) + """ ">
                                         <div class="form-floating my-1">
                                             <input type="text" class="form-control rounded-0" name ="nom">
@@ -154,7 +154,7 @@ def node_tohtml(node):
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-body">
-                                  <form action="{% url 'adminin:form_leaf' %}" class="m-1" method="get" >
+                                  <form action=" """ + reverse('adminin:form_leaf') + """" class="m-1" method="get" >
                                     <input type="hidden" name="id" value=" """ + str(node.id) + """ ">
                                         <div class="form-floating">
                                             <input type="number" class="form-control" name="nombre" >
