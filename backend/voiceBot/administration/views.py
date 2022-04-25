@@ -114,7 +114,8 @@ def node_tohtml(node):
                            <input type="hidden" name="id" value=" """ + str(node.id) + """ ">
                            <button type="submit" class="w-100 btn btn-primary">supprimer</button>
                         </form>  """
-
+                        
+    
     form_add = """  
                     <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#__"""+str(node.id)+"""">
                         ajouter
