@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block corps %}
+<div class="container">
+    <div class="w-md-50  p-3" id="hierarchie">
+        {% autoescape off %}
+        {{ hierarchie }}
+        {% endautoescape %}
+    </div>
+</div>
+{% endblock %}

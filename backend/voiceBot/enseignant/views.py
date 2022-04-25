@@ -3,6 +3,8 @@ from administration.models import Caracteristique
 from enseignant.models import Enseignant, Information, ValCaracteristique
 from django.shortcuts import redirect, render, get_object_or_404
 
+from enseignant.handle_teacher_tree import generate_hierachie
+
 
 
 # Create your views here.
@@ -22,9 +24,13 @@ def ajouter_information(request):
             val.save()
     return redirect('enseignant:view_form')
 
+def view_tree(request):
+    hierarchie = generate_hierachie()
+    return render(request, "homeTeacher.html", {'hierarchie': hierarchie})
+
 def view_form(request):
     html_form = ""
-    id = 15
+    id = request.GET['id']
 
     infos = Information.objects.filter(valcaracteristique__caracteristique__feuille__id = id)
     # for info in infos:
@@ -46,10 +52,6 @@ def view_form(request):
                        <button type = "submit" class = "btn btn-primary mb-3" > Confirm </button >
                  </div> 
                  """
-    print("test***********************************************************************************")
-    # fichier = open("templates/test.html", "w")
-    # fichier.write(html_form)
-    # fichier.close()
     return render(request, 'fill.html', context={"html_form": html_form})
 
 def edit_info(request):
