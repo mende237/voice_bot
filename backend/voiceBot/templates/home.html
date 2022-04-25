@@ -4,10 +4,10 @@
 {% block corps %}
 <div class="container">
     <div class="my-3">
-        <button type="button" class="btn btn-primary text-center" data-bs-toggle="modal" data-bs-target="#___">
+        <button type="button" class="btn btn-primary text-center" data-bs-toggle="modal" data-bs-target="#______">
             <i class="fa fa-plus "></i> ajouter une nouvelle racine
         </button>
-        <div class="modal fade" id="___" aria-hidden="true">
+        <div class="modal fade" id="______" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -28,8 +28,29 @@
             </div>
         </div>
     </div>
-    <div class="w-md-50 overflow-auto border-1 border border-primary p-3">
-        {% include 'hierarchie_for_admin.html' %}
+    <div class="w-md-50  p-3" id="hierarchie">
     </div>
 </div>
+{% endblock %}
+
+<!-- JS -->
+{% block javascript %}
+<!-- Bootstrap core JavaScript-->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'js/sb-admin-2.min.js'%}"></script>
+
+<!-- Page level plugins -->
+<script src="{% static 'vendor/chart.js/Chart.min.js'%}"></script>
+<script>
+    var data = JSON.parse("{{ data|escapejs }}");
+    var hierarchieDiv = document.getElementById('hierarchie');
+    hierarchieDiv.innerHTML = data['hierarchie']
+</script>
+
 {% endblock %}
