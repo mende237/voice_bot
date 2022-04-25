@@ -6,11 +6,7 @@ from administration.models import Caracteristique, Feuille, Noeud
 
 def home(request):
     hierarchie = generate_hierachie()
-    donnees = {
-        'hierarchie' : hierarchie,
-    }
-    data = dumps(donnees)
-    return render(request, "home.html" , { 'data': data } )
+    return render(request, "home.html" , {'hierarchie' : hierarchie } )
 
 
 def create_leaf(request):
@@ -75,14 +71,11 @@ def form_leaf(request):
             </td>
         </tr>
         """
-    fichier = open("templates/inputs_leafs.html", "w")
-    fichier.write(inputs)
-    fichier.close()
-
     context = {
         'nombre':  int(nombre),
         'nom': node.nom,
         'id': id,
+        'inputs' : inputs,
     }
     return render(request, "form_leaf.html", context)
 

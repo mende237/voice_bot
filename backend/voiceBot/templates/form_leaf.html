@@ -33,7 +33,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                    {% include 'inputs_leafs.html' %}
+                    {% autoescape off %}
+                    {{ inputs }}
+                    {% endautoescape %}
                 </tbody>
             </table>
         </div>
