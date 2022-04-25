@@ -2,6 +2,37 @@
 {% load static %}
 
 {% block corps %}
-{{ auth }}
+<div class="container">
+    <div class="my-3">
+        <button type="button" class="btn btn-primary text-center" data-bs-toggle="modal" data-bs-target="#______">
+            <i class="fa fa-plus "></i> ajouter une nouvelle racine
+        </button>
+        <div class="modal fade" id="______" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form action="{% url 'adminin:add_noeud' %}" class="m-1" method="get">
+                            <input type="hidden" name="id" value="">
+                            <div class="form-floating my-1">
+                                <input type="text" class="form-control rounded-0" name ="nom">
+                                <label for="nom"> nom du nouveau noeud </label>
+                            </div>
+                            <div class="form-floating my-1">
+                                <input type="text" class="form-control rounded-0" name ="question">
+                                <label for="question"> question du nouveau noeud </label>
+                            </div>
+                            <button type="submit" class="btn btn-primary m-1 border-0"><i class="fa fa-trash3"></i>valider</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="w-md-50  p-3" id="hierarchie">
+    {% autoescape off %}
+    {{ hierarchie }}
+    {% endautoescape %}
+    </div>
+</div>
+{% endblock %}
 
-{% endblock%}
