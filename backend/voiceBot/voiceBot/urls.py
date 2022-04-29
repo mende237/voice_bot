@@ -20,5 +20,9 @@ from django.urls import path, include
 urlpatterns = [
     path('super_admin/', admin.site.urls),
     path('admin/', include(('administration.urls','administration'),namespace='adminin')),
+<<<<<<< HEAD
     path('', include('authentification.urls')),
+=======
+    path('enseignant/', include(('enseignant.urls','enseignant'), namespace='enseignantin')),
+>>>>>>> 7e6e88d72e757134db306c414c5491d0a7f8d1a3
 ]

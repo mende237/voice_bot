@@ -6,28 +6,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load static %}
-    
+
     <!-- ICON -->
     {% block icon %}
     {% endblock %}
-    
-    
+
+
     <title>{% block titre %}{% endblock %}</title>
-    
+
     <!-- CSS -->
     {% block style %}
-    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}" >
-    <link rel="stylesheet" href="{% static 'assets/font-awesome-4.1.0/css/font-awesome.min.css' %}" >
-    
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/font-awesome-4.1.0/css/font-awesome.min.css' %}">
+
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
- 
+
     <!-- Custom styles for this template-->
-    <link rel="stylesheet" href="{% static 'css/sb-admin-2.min.css' %}" > 
+    <link rel="stylesheet" href="{% static 'css/sb-admin-2.min.css' %}">
     <style>
-        a:hover{
-            text-decoration: none;  
+        a:hover {
+            text-decoration: none;
         }
     </style>
     {% endblock %}
@@ -52,7 +52,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="{% url 'adminin:Home' %}">
+                <a class="nav-link" href="index.html">
                     <i class="fa fa-tachometer"></i>
                     <span>Tree</span></a>
             </li>
@@ -72,21 +72,24 @@
                     <i class="fa fa-cog"></i>
                     <span>Add Teacher</span>
                 </a>
-               
 
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-            aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fa fa-cog"></i>
-            <span>Remove Teacher</span>
-               </a>
 
-               <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-               aria-expanded="true" aria-controls="collapseTwo">
-               <i class="fa fa-cog"></i>
-               <span>Remove Teacher</span>
-                  </a>
-           </li>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fa fa-cog"></i>
+                    <span>Remove Teacher</span>
+                </a>
+
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fa fa-cog"></i>
+                    <span>Remove Teacher</span>
+                </a>
+            </li>
+
+
             <hr class="sidebar-divider">
+
 
 
             <!-- Divider -->
@@ -97,23 +100,23 @@
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
 
-       
+
         </ul>
         {% endblock %}
-        
+
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div class="content">
-            
+
                 <!-- ENTETE -- Topbar -->
                 {% block entete %}
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-    
+
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-    
+
                     <!-- Topbar Search -->
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
@@ -127,10 +130,10 @@
                             </div>
                         </div>
                     </form>
-    
+
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-    
+
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                         <li class="nav-item dropdown no-arrow d-sm-none">
                             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
@@ -155,17 +158,17 @@
                             </div>
                         </li>
                     </ul>
-    
+
                 </nav>
                 {% endblock %}
-                
+
                 <!-- CORPS -- Begin Page Content -->
                 <div class="content-fluid">
-                {% block corps %}
-                {% endblock%}
+                    {% block corps %}
+                    {% endblock%}
                 </div>
             </div>
-            
+
             <!-- PIED DE PAGE -->
             {% block footer %}
             <footer class="sticky-footer bg-white">
@@ -181,25 +184,25 @@
     <!-- LE PRELOADER -->
     {% block preloader %}
     {% endblock %}
-        
+
     {% block secondblock %}
     {% endblock %}
-    
+
     <!-- JS -->
     {% block javascript %}
     <!-- Bootstrap core JavaScript-->
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
- 
+
     <!-- Core plugin JavaScript-->
     <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
- 
+
     <!-- Custom scripts for all pages-->
     <script src="{% static 'js/sb-admin-2.min.js'%}"></script>
- 
+
     <!-- Page level plugins -->
     <script src="{% static 'vendor/chart.js/Chart.min.js'%}"></script>
- 
+
     {% endblock %}
 </body>
 

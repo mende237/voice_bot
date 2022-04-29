@@ -14,9 +14,11 @@ class Information(models.Model):
     enseignant = models.ForeignKey(Enseignant,  on_delete=models.CASCADE)
     
     
-class ValCaracteristique(models.Model):
+class ValCaracteristique(models.Model): 
     content = models.CharField(max_length=30)
     caracteristique = models.ForeignKey(Caracteristique, on_delete = models.CASCADE)
+    information = models.ForeignKey(
+        Information, on_delete=models.CASCADE)
     
 
     

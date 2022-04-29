@@ -11,7 +11,7 @@ TYPE_CHOICES = (
 class Noeud(models.Model):
     parent = models.ForeignKey('self', on_delete = models.CASCADE, null=True)
     nom = models.CharField(max_length=50)
-    
+    question = models.CharField(max_length=100, default="")
     def tohtml(self):
         pass
         
