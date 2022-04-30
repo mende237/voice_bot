@@ -11,8 +11,7 @@ from . tokens import generate_token
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_str , force_text
 
-def home(request):
-    return render(request ,"authentification/index.html")
+
 
 def welcome(request):
     return render(request ,"authentification/welcome.html")
@@ -97,7 +96,8 @@ def signin(request):
             fname = user.first_name
             messages.success(request, "Logged In Sucessfully!!")
             #return render(request, "authentification/index.html",{"fname":fname})
-            return redirect('dashbord')
+            request.session['fname'] = fname
+            return redirect('adminin:Home')
     return render(request, "authentification/signin.html")
 
 
@@ -105,7 +105,7 @@ def signin(request):
 def signout(request):
     logout(request)
     messages.success(request, "Logged Out Successfully!!")
-    return redirect('home')
+    return redirect('signin')
  
 
 def activate(request,uidb64,token):
