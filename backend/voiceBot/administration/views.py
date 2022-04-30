@@ -248,3 +248,6 @@ def generate_hierachie():
     else:
         trees_visual = trees_visual + "<h2> Aucun noeud existant </h2>"
     return trees_visual
+
+def add_admin(request):
+    return render(request , "add_anotherAdmin.html")

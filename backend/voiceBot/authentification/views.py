@@ -14,6 +14,9 @@ from django.utils.encoding import force_bytes, force_str , force_text
 def home(request):
     return render(request ,"authentification/index.html")
 
+def welcome(request):
+    return render(request ,"authentification/welcome.html")
+
 
 def signup(request):
     if request.method == "POST":
@@ -52,7 +55,7 @@ def signup(request):
 
         # Welcome Email
         subject = "Welcome to EasyInformation Admin!!"
-        message = "Hello " + myUser.first_name + "!! \n" + "Welcome to EasyInformation!! \nThank you for visiting our website\n. We have also sent you a confirmation email, please confirm your email address. \n\nThanking You\n"        
+        message = "Hello " + myUser.first_name + "!! \n" + "Your password is :"+pass1  +" Welcome to EasyInformation!! \nThank you for visiting our website\n. We have also sent you a confirmation email, please confirm your email address. \n\nThanking You\n"        
         from_email = settings.EMAIL_HOST_USER
         to_list = [myUser.email]
         send_mail(subject, message, from_email, to_list, fail_silently=True)
@@ -85,16 +88,16 @@ def signin(request):
         pass1 = request.POST['password']
         
         user = authenticate(username=username, password=pass1)
-        
-        if user is not None:
+        print(user)
+        if user is  None:
+            messages.error(request, "Error during authentification")
+            return redirect('signin')
+        else:
             login(request, user)
             fname = user.first_name
             messages.success(request, "Logged In Sucessfully!!")
-            return render(request, "authentification/index.html",{"fname":fname})
-        else:
-            messages.error(request, "Error during authentification")
-            return redirect('home')
-    
+            #return render(request, "authentification/index.html",{"fname":fname})
+            return redirect('dashbord')
     return render(request, "authentification/signin.html")
 
 
@@ -127,7 +130,7 @@ def admin(request):
     return render(request , 'home.html')
 
 def ajouterEnseignant(request):
-    ens = Enseignant()
+   # ens = Enseignant()
     if request.method == "POST":
         name = request.POST['name']
         password = request.POST['password']

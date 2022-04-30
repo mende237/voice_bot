@@ -1,0 +1,66 @@
+
+
+.login{
+  height: 100vh;
+  background-image: url("../assets/img/uy1.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back{
+  height: 100vh;
+  background-image: url("../assets/img/uy1.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
+
+.items-container{
+  
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+
+.item{
+  
+  display: flex;
+  justify-content: center;
+  margin: 4em;
+  text-align: center;
+}
+.welcome .message p{
+  font-size: 30px;
+  color: #FFF;
+  font-weight: bold;
+}
+.btn{
+  font-weight: bold;
+  height: 50px;
+  border-radius: 20px;
+}
+.img{
+  text-align: center;
+}
+.action{
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+}
+
+.center-login{
+  width: 450px;
+  margin: auto;
+}
+.center-signup{
+  width: 650px;
+  margin: auto;
+
+}
+.mycolor{
+  color: #FFF;
+  font-size: 40px;
+}

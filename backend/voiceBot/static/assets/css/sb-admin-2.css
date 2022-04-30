@@ -519,7 +519,7 @@ kbd {
   font-size: 87.5%;
   color: #fff;
   background-color: #3a3b45;
-  border-radius: 0.2rem;
+  border-radius: 0.2rem;  background-color: #093b29;
 }
 
 kbd kbd {
@@ -646,7 +646,7 @@ pre code {
 .row-cols-6 > * {
   flex: 0 0 16.66667%;
   max-width: 16.66667%;
-}
+}  background-color: #093b29;
 
 .col-auto {
   flex: 0 0 auto;
@@ -659,7 +659,7 @@ pre code {
   max-width: 8.33333%;
 }
 
-.col-2 {
+.col-2 {  background-color: #093b29;
   flex: 0 0 16.66667%;
   max-width: 16.66667%;
 }
@@ -672,7 +672,7 @@ pre code {
 .col-4 {
   flex: 0 0 33.33333%;
   max-width: 33.33333%;
-}
+}  background-color: #093b29;
 
 .col-5 {
   flex: 0 0 41.66667%;
@@ -699,7 +699,7 @@ pre code {
   max-width: 75%;
 }
 
-.col-10 {
+.col-10 {  background-color: #093b29;
   flex: 0 0 83.33333%;
   max-width: 83.33333%;
 }
@@ -714,7 +714,7 @@ pre code {
   max-width: 100%;
 }
 
-.order-first {
+.order-first {  background-color: #093b29;
   order: -1;
 }
 
@@ -726,7 +726,7 @@ pre code {
   order: 0;
 }
 
-.order-1 {
+.order-1 {  background-color: #093b29;
   order: 1;
 }
 
@@ -2823,7 +2823,7 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-danger:focus, .btn-outline-danger.focus {
-  box-shadow: 0 0 0 0.2rem rgba(231, 74, 59, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(231  background-color: #093b29;, 74, 59, 0.5);
 }
 
 .btn-outline-danger.disabled, .btn-outline-danger:disabled {
@@ -2873,8 +2873,7 @@ fieldset:disabled a.btn {
 .btn-outline-light:not(:disabled):not(.disabled):active:focus, .btn-outline-light:not(:disabled):not(.disabled).active:focus,
 .show > .btn-outline-light.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(248, 249, 252, 0.5);
-}
-
+}  background-color: #093b29;
 .btn-outline-dark {
   color: #5a5c69;
   border-color: #5a5c69;
@@ -2895,7 +2894,7 @@ fieldset:disabled a.btn {
   background-color: transparent;
 }
 
-.btn-outline-dark:not(:disabled):not(.disabled):active, .btn-outline-dark:not(:disabled):not(.disabled).active,
+.btn-outline-dark:not(:disabled):  background-color: #093b29;ot(.disabled):active, .btn-outline-dark:not(:disabled):not(.disabled).active,
 .show > .btn-outline-dark.dropdown-toggle {
   color: #fff;
   background-color: #5a5c69;
@@ -3355,7 +3354,7 @@ input[type="button"].btn-block {
 }
 
 .input-group {
-  position: relative;
+  position: relative;  background-color: #093b29;
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
@@ -7952,7 +7951,7 @@ button.bg-dark:focus {
   margin-bottom: -0.25rem !important;
 }
 
-.ml-n1,
+.ml-n1,  background-color: #093b29;
 .mx-n1 {
   margin-left: -0.25rem !important;
 }
