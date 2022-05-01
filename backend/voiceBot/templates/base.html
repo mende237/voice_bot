@@ -57,7 +57,8 @@
                     <span>Tree</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{% url 'administration:add_admin' %} ">
+
                     <i class="fa fa-tachometer"></i>
                     <span>add other admin</span></a>
             </li>
@@ -101,7 +102,7 @@
         </ul>
         {% endblock %}
         
-        <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content-wrapper" class="d-flex flex-column back">
             <!-- Main Content -->
             <div class="content">
             
