@@ -49,14 +49,19 @@
                             <div class="col-lg">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back Teacher  !</h1>
                                     </div>
-                                    <form class="user" action="/signin/" method="POST">
+                                    <form class="user" action={% url 'signinTeacher' %} method="POST">
                                         {% csrf_token %}
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
                                                 id="username" 
                                                 placeholder="Enter your username" name="username">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user"
+                                                id="email" 
+                                                placeholder="Enter your email adress" name="email">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
