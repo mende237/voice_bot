@@ -1,4 +1,3 @@
-# environnement virtuelle 
 #!/home/mbe/Bureau/DS/python/easylocalenv/bin/python3
 
 import conf as cf
