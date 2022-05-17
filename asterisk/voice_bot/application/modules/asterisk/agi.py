@@ -1,6 +1,5 @@
 import sys
 
-
 class Agi(object):
 
     def __init__(self):
