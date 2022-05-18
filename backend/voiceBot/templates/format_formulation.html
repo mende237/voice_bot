@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block corps %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form action="#" method="get" class="">
+                <div class="form-group mt-2">
+                    <input type="hidden" name="id_feuille" value="{{ id_feuille }}">
+                    <div class="form-floating my-1">
+                        <input type="text" class="form-control rounded-0" name="format">
+                        <label for="format"> format de formulation </label>
+                    </div>
+                </div>
+                <div class="form-group mt-2">
+                    <div class="my-3">
+                        <h5>sequences de caracteristiques choisis</h5>
+                        <a class="btn btn-secondary rounded rounded-pill" id="btn-add"><span class="fa fa-plus"></span> ajouter</a>
+                    </div>
+                    <div id="features" len="0" class="p-3">
+                    </div>
+                </div>
+                <div class="form-group mt-2">
+                    <button type="submit" class="btn btn-primary">valider</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'assets/font-awesome-4.1.0/css/font-awesome.min.css' %}">
+
+<link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link rel="stylesheet" href="{% static 'css/sb-admin-2.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/perso/format.css' %}">
+
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+    var choises = "{% autoescape off %}{{ choises }}{% endautoescape %}";
+    var btn_add = document.getElementById("btn-add");
+    var idmax = 0;
+    var features = document.getElementById("features");
+
+    function add_feature(num_seq) {
+        feature = document.createElement("div");
+        feature.setAttribute("class", "feature");
+        feature.setAttribute("id", "feature_" + num_seq);
+
+        select_feature = document.createElement("select");
+        select_feature.setAttribute("name", "feature_" + num_seq);
+        select_feature.setAttribute("class", "form-select form-select-sm");
+        select_feature.innerHTML = choises;
+
+        btn_delete = document.createElement("a");
+        btn_delete.setAttribute("btn_delete_num", num_seq);
+        btn_delete.setAttribute("class", "btn btn-primary");
+        btn_delete.innerHTML = 'x';
+
+        /*feature.appendChild(escap);*/
+        feature.appendChild(select_feature);
+        feature.appendChild(btn_delete);
+        features.appendChild(feature);
+
+        idmax++;
+        btn_delete.addEventListener('click', (e) => {
+            num = parseInt(e.currentTarget.getAttribute("btn_delete_num"));
+            features.removeChild(document.getElementById("feature_" + num));
+            for (i = num + 1; i < idmax; i++) {
+                feature_ = document.getElementById("feature_" + i);
+                feature_.childNodes[0].setAttribute("name", "feature_" + (i - 1));
+                feature_.childNodes[1].setAttribute("btn_delete_num", (i - 1));
+                feature_.setAttribute("id", "feature_" + (i - 1));
+            }
+            idmax--;
+        });
+    }
+    btn_add.addEventListener('click', () => {
+        add_feature(idmax);
+    });
+</script>
+<!-- Bootstrap core JavaScript-->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'js/sb-admin-2.min.js'%}"></script>
+
+
+{% endblock %}

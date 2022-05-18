@@ -7,7 +7,11 @@ import Test from './components/Form/Test';
 
 function App() {
   return (
+
   <SideBar></SideBar>
+
+  <SideBar></SideBar> 
+
   );
 }
 
