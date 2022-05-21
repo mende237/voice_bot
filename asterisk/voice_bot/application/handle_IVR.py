@@ -16,6 +16,7 @@ def greet(agi, welcome_message="bienvenu dans notre programme d'accès à l'info
     
 def handle_decision(agi , message):
     values = ['1' , '2']
+    user_rep = ''
     while user_rep not in values:
         user_rep = read_message(message , cf.CHEMIN_AUDIOS_APP +
                             "/formulation.mp3", agi)
@@ -55,9 +56,9 @@ def handle_IVR(agi):
        agi.verbose("---------------------------- condition ------")
        while repeat == True:
            user_rep = interact(agi , racines)
-           agi.verbose("---------------------------- continue ------")
            handle_IVR_bis(agi , conn , int(user_rep))
-           user_rep = handle_decision(message)
+           user_rep = handle_decision(agi , message)
+           agi.verbose("---------------------------- continue ------")
            if int(user_rep) == 1:
                repeat = True
            else:
@@ -104,8 +105,8 @@ def load_nodes(mysql_conn, agi, id=-1, racine=False):
     rows = cursor.fetchall()
     for row in rows:
         node = (row[0], row[1] , row[3])
-        agi.verbose(
-            f"**     {row[0]} : {row[1]} , {row[2]} , {row[3]}         **")
+        # agi.verbose(
+        #     f"**     {row[0]} : {row[1]} , {row[2]} , {row[3]}         **")
         result.append(node)
 
     return result
