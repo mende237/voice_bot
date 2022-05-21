@@ -4,7 +4,6 @@
 import conf as cf
 #from modules.asterisk.agi import Agi
 from asterisk.agi import *
-from modules.convert_audio.convert import convert_mp3
 from handle_IVR import handle_IVR
 
 agi = AGI()

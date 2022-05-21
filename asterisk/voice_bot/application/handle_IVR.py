@@ -10,57 +10,84 @@ def connect(host=cf.BD_HOST, user=cf.BD_USER, password=cf.BD_PASSWORD, database=
     return conn
 
 
-def handle_IVR(agi):
-    agi.verbose("""******************* enter IVR *************""")
-    conn = connect()
-    repeat = True
-    welcome_message = "bienvenu dans notre programme d'accès à l'information"
+def greet(agi, welcome_message="bienvenu dans notre programme d'accès à l'information"):
     read_message(welcome_message, cf.CHEMIN_AUDIOS_APP +
-                 "/welcome.mp3" , [] , agi)
-
-    level_racine = True
-    while repeat == True:
-        if level_racine:
-            racines = load_nodes(conn, agi, racine=True)
-            length = len(racines)
-            values = [range(1, length+1)]
-            formulation = formulate(racines)
-            agi.verbose(f"******************* {formulation} *************")
-            agi.verbose("***            racine             ***")
-            user_rep = read_message(formulation, cf.CHEMIN_AUDIOS_APP +
-                               "/formulation.mp3", values , agi)
-
-            agi.verbose(
-                f"le nombre de racine est  ---------------------- {length} ------")
-            agi.verbose(f"le reponse ---------------------- {user_rep} ------")
-
-            # on repete ca tant que l'utilisateur n'entre rien ou un mauvais choix
-            while user_rep not in values:
-                user_rep = read_message(formulation, cf.CHEMIN_AUDIOS_APP +
-                                   "/formulation.mp3", values , agi)
-                agi.verbose(
-                    f"le reponse ---------------------- {user_rep} ------")
-                
-        else:
-            agi.verbose("***            noeud!!!!!!!        ***")
-            # nodes = load_nodes(conn , agi , id = id)
-        repeat = False
-    return 0
+                 "/welcome.mp3", agi , interrupt = False)
+    
+def handle_decision(agi , message):
+    values = ['1' , '2']
+    while user_rep not in values:
+        user_rep = read_message(message , cf.CHEMIN_AUDIOS_APP +
+                            "/formulation.mp3", agi)
+    return user_rep
 
 
-def read_message(message, file_path, escape_digits , agi):
+def interact(agi, nodes):
+    length = len(nodes)
+    values = []
+    
+    for i in range(1,length+1):
+        values.append(str(i))
+        
+    
+    formulation = formulate(nodes)
+    user_rep = read_message(formulation, cf.CHEMIN_AUDIOS_APP +
+                            "/formulation.mp3", agi)
+    
+    agi.verbose(
+        f"le reponse ---------------------- {values} ------")
+    # on repete ca tant que l'utilisateur n'entre rien ou un mauvais choix
+    while user_rep not in values:
+        user_rep = read_message(formulation, cf.CHEMIN_AUDIOS_APP +
+                                "/formulation.mp3", agi)
+       
+    return user_rep
+
+
+def handle_IVR(agi):
+    conn = connect()
+    racines = load_nodes(conn, agi, racine=True)
+    length = len(racines)
+    greet(agi)
+    if length >= 1:
+       repeat = True
+       message = "voulez vous retourner au menu principale ? tapez 1 pour retourner . Tapez 2 pour quitter"
+       agi.verbose("---------------------------- condition ------")
+       while repeat == True:
+           user_rep = interact(agi , racines)
+           agi.verbose("---------------------------- continue ------")
+           handle_IVR_bis(agi , conn , int(user_rep))
+           user_rep = handle_decision(message)
+           if int(user_rep) == 1:
+               repeat = True
+           else:
+               repeat = False
+    
+    
+def handle_IVR_bis(agi , conn , node_id):
+    nodes = load_nodes(conn, agi , id = node_id)
+    length = len(nodes)
+    if(length == 0):
+        message = "arriver sur une feuille"
+        user_rep = read_message(message, cf.CHEMIN_AUDIOS_APP +
+                            "/formulation.mp3", agi)
+    else:
+        user_rep = interact(agi , nodes)
+        handle_IVR_bis(agi , conn , int(user_rep))
+
+
+def read_message(message, file_path, agi, interrupt = True):
     tts = gTTS(message, lang='fr')
     agi.verbose(f"***     {file_path}        ***")
     tts.save(file_path)
 
     new_file = file_path.replace('.mp3', '.wav')
     convert_mp3(file_path, new_file)
-    if len(escape_digits) == 0:
-        agi.stream_file(new_file.replace('.wav', ''))
+    if interrupt == True:
+        rep = agi.get_data(new_file.replace('.wav', ''))
     else:
-        agi.stream_file(new_file.replace('.wav', ''),
-                        escape_digits=escape_digits)
-    return 0
+        rep = agi.stream_file(new_file.replace('.wav', ''))
+    return rep
 
 
 # racine est un booleen mettre a false si l'on veut charger des noeud intermediaires
@@ -76,7 +103,7 @@ def load_nodes(mysql_conn, agi, id=-1, racine=False):
 
     rows = cursor.fetchall()
     for row in rows:
-        node = (row[0], row[1])
+        node = (row[0], row[1] , row[3])
         agi.verbose(
             f"**     {row[0]} : {row[1]} , {row[2]} , {row[3]}         **")
         result.append(node)
@@ -92,5 +119,6 @@ def formulate(nodes):
         i = i + 1
 
     return result
+
 
 
