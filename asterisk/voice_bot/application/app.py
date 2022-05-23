@@ -1,20 +1,15 @@
-#!/home/mbe/Bureau/DS/python/easylocalenv/bin/python3
+#!/home/dimitri/anaconda3/bin/python3
 
+# import imp
 import conf as cf
-from modules.asterisk.agi import Agi
-from modules.convert_audio.convert import convert_mp3
+#from modules.asterisk.agi import Agi
+from asterisk.agi import *
+from handle_IVR import handle_IVR
 
-agi = Agi()
-agi.loading()
+agi = AGI()
+agi.verbose(""" enter menu !!!!!!!!!!!!!!!!!!!!!!""")
+r = handle_IVR(agi)
+#agi.stream_file(cf.CHEMIN_AUDIOS_APP+"/welcome")
+agi.verbose(""" passs ???????????????????????????""")
 
-reponse = agi.playback(cf.CHEMIN_AUDIOS_APP+"/test")
-
-from gtts import gTTS
-tts=gTTS("veuillez entrez un numero",lang='fr')
-tts.save(cf.CHEMIN_AUDIOS_APP+"/ask_choise_1.mp3")
-
-convert_mp3(cf.CHEMIN_AUDIOS_APP+"/ask_choise_1.mp3", cf.CHEMIN_AUDIOS_APP+"/ask_choise_1.wav")
-reponse = agi.playback(cf.CHEMIN_AUDIOS_APP+"/ask_choise_1")
-
-agi.hangup()
 exit(0)
