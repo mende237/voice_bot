@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'authentification',
 
 ]
-
+#herman
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
