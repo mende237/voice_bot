@@ -34,12 +34,13 @@
 </head>
 
 <body>
+    {% if user.is_authenticated %}
     <div id="wrapper">
         {% block sidebar %}
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'adminin:Home' %}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fa-solid fa-face-laugh"></i>
                 </div>
@@ -130,7 +131,13 @@
     
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-    
+                        <li> 
+                            
+                            <div style="display: flex ;justify-content: space-between ">
+                            <div style="background-color: black; margin: 15px;padding: 8px"> Hello {{adminName}}</div>
+                            <div style="background-color: aqua;margin: 15px;padding: 8px">photo</div>
+                            <div style="background-color: red;margin: 15px; padding: 8px;">modifier</div>
+                        </div></li>
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                         <li class="nav-item dropdown no-arrow d-sm-none">
                             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
@@ -178,6 +185,12 @@
             {% endblock %}
         </div>
     </div>
+    {% else %}
+    <div class="jumbotron">
+        <p style="text-align: center; font-weight: bold; color: black; font-size: 30px;">OUps!!!! vous n'avez pas le droit d'acceder à cette page sans etre authentifié</p>
+    </div>
+    {% endif %} 
+
     <!-- LE PRELOADER -->
     {% block preloader %}
     {% endblock %}

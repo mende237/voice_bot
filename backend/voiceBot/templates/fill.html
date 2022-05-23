@@ -1,12 +1,15 @@
-{% extends 'base.html' %}
+{% extends 'baseEnseignant.html' %}
 {% load static %}
 
 {% block corps %}
-<form name="inscription" method="get" action="{% url 'enseignantin:add_info' %}">
+<div class="container">
+
+<form class="container" name="inscription" method="get" action="{% url 'enseignantin:add_info' %}">
     {%autoescape off%}
         {{html_form}}
     {%endautoescape%}
 </form>
+</div>
 
 {% endblock %}
 

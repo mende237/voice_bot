@@ -163,7 +163,7 @@ def signin(request):
             fname = user.first_name
             messages.success(request, "Logged In Sucessfully!!")
             #return render(request, "authentification/index.html",{"fname":fname})
-            request.session['fname'] = fname
+            request.session['fname'] = username
             return redirect('administration:Home')
     return render(request, "authentification/signin.html")
 
@@ -220,12 +220,3 @@ def activate(request,uidb64,token):
 
 def admin(request):
     return render(request , 'home.html')
-
-def ajouterEnseignant(request):
-   # ens = Enseignant()
-    if request.method == "POST":
-        name = request.POST['name']
-        password = request.POST['password']
-
-        
-    return render(request ,'enseignant/ajouter.html')

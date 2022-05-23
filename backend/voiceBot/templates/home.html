@@ -1,26 +1,7 @@
 
 {% extends 'base.html' %}
-{% if user.is_authenticated %}
 
 {% load static %}
-{% block entete %}
-<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-    
-    <!-- Sidebar Toggle (Topbar) -->
-    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-        <i class="fa fa-bars"></i>
-    </button>
-
-    <h2>Hello {{fname}}!</h2>
-    <h4>You're successfully logged in.</h4>
-    <div class="float-right">
-        <button  class="btn btn-link  rounded-circle" type="submit"><a href="/signout">SignOut</a></button>
-    </div> 
-
-</nav>
-
-{% endblock entete %}
-
 
 {% block corps %}
 <div class="container back">
@@ -57,8 +38,3 @@
 </div>
 {% endblock %}
 
-
-
-{% else %}
-    <h4>Vous etes pas connecété</h4>
-{% endif %}

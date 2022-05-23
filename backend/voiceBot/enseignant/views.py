@@ -26,7 +26,7 @@ def ajouter_information(request):
 
 def view_tree(request):
     hierarchie = generate_hierachie()
-    return render(request, "homeTeacher.html", {'hierarchie': hierarchie})
+    return render(request, "homeTeacher.html", {'hierarchie': hierarchie , "teacherName" : "null pour le moment"})
 
 def view_form(request):
     html_form = ""
@@ -43,7 +43,7 @@ def view_form(request):
         html_form += make_input(caracteristique) + "<br>" 
     
     html_form += """ 
-                 <div class = "mb-3 row" ><label for = "staticEmail" class = "col-sm-2 col-form-label"> delai </label >
+                 <div class = "mb-3 row" ><label for = "staticEmail" class = "col-sm-2 col-form-label"> Expiration  date</label >
                      <div class = "col-sm-10">
                          <input type = "date" name = "delai"> 
                      </div >
@@ -78,3 +78,21 @@ def make_input(caracteristique):
                 </div>"""
     return result
     
+def modify_info(request):
+    if request.method == "POST" :
+        username = request.POST['username']
+        password = request.POST['password']
+        file = request.POST['file']
+        flag1 =0
+        flag2 = 0
+        flag3 = 0
+        if len(username) =="":
+            flag1 = 1
+        if len(password) == 0:
+            flag2  =1
+        if len(file)==0:
+            flag3 = 1
+        
+        
+
+    return render(request , "modifyTeacherInfo.html")
