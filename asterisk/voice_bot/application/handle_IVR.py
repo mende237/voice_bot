@@ -1,12 +1,18 @@
 import mysql.connector
 from modules.convert_audio.convert import convert_mp3
 from gtts import gTTS
+import sqlite3
 import conf as cf
 
 
-def connect(host=cf.BD_HOST, user=cf.BD_USER, password=cf.BD_PASSWORD, database=cf.BD_NAME):
+def connect_mysql(host=cf.BD_HOST, user=cf.BD_USER, password=cf.BD_PASSWORD, database=cf.BD_NAME):
     conn = mysql.connector.connect(
         host=host, user=user, password=password, database=database)
+    return conn
+
+
+def connect_sqlite(database=cf.PATH_BD):
+    conn = sqlite3.connect(database)
     return conn
 
 
@@ -35,18 +41,16 @@ def interact(agi, nodes):
     user_rep = read_message(formulation, cf.CHEMIN_AUDIOS_APP +
                             "/formulation.mp3", agi)
     
-    agi.verbose(
-        f"le reponse ---------------------- {values} ------")
     # on repete ca tant que l'utilisateur n'entre rien ou un mauvais choix
     while user_rep not in values:
         user_rep = read_message(formulation, cf.CHEMIN_AUDIOS_APP +
                                 "/formulation.mp3", agi)
-       
-    return user_rep
+        
+    return nodes[int(user_rep)-1][0] , int(user_rep)
 
 
 def handle_IVR(agi):
-    conn = connect()
+    conn = connect_sqlite()
     racines = load_nodes(conn, agi, racine=True)
     length = len(racines)
     greet(agi)
@@ -55,8 +59,9 @@ def handle_IVR(agi):
        message = "voulez vous retourner au menu principale ? tapez 1 pour retourner . Tapez 2 pour quitter"
        agi.verbose("---------------------------- condition ------")
        while repeat == True:
-           user_rep = interact(agi , racines)
-           handle_IVR_bis(agi , conn , int(user_rep))
+           id , user_rep = interact(agi , racines)
+           handle_IVR_bis(agi, conn, id,
+                          racines[user_rep - 1][1], racines[user_rep - 1][2])
            user_rep = handle_decision(agi , message)
            agi.verbose("---------------------------- continue ------")
            if int(user_rep) == 1:
@@ -65,16 +70,27 @@ def handle_IVR(agi):
                repeat = False
     
     
-def handle_IVR_bis(agi , conn , node_id):
+def handle_IVR_bis(agi , conn , node_id , nom ,  question):
+    message = ""
+    if question == None or question == '':
+        message = cf.DEFAULT_MESSAGE + nom
+    else:
+        message = question
+        
+    read_message(message, cf.CHEMIN_AUDIOS_APP + "/formulation.mp3", agi , interrupt=False)
     nodes = load_nodes(conn, agi , id = node_id)
+    
     length = len(nodes)
     if(length == 0):
         message = "arriver sur une feuille"
         user_rep = read_message(message, cf.CHEMIN_AUDIOS_APP +
                             "/formulation.mp3", agi)
+        
     else:
-        user_rep = interact(agi , nodes)
-        handle_IVR_bis(agi , conn , int(user_rep))
+        id , user_rep = interact(agi , nodes)
+        agi.verbose(f"---------------------------- id : {id}  choix : {user_rep} nom : {nodes[user_rep - 1][1]} question : {nodes[user_rep - 1][2]}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------")
+        handle_IVR_bis(agi, conn, id ,
+                       nodes[user_rep - 1][1], nodes[user_rep - 1][2])
 
 
 def read_message(message, file_path, agi, interrupt = True):
@@ -101,15 +117,20 @@ def load_nodes(mysql_conn, agi, id=-1, racine=False):
     else:
         cursor.execute(
             """SELECT * FROM administration_noeud WHERE parent_id IS NULL""")
-
+    
     rows = cursor.fetchall()
     for row in rows:
-        node = (row[0], row[1] , row[3])
+        node = (row[0], row[1] , row[2])
         # agi.verbose(
         #     f"**     {row[0]} : {row[1]} , {row[2]} , {row[3]}         **")
+        
         result.append(node)
 
     return result
+
+
+
+
 
 
 def formulate(nodes):
