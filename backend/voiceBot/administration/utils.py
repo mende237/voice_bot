@@ -11,7 +11,10 @@ def node_tohtml(node):
                            <input type="hidden" name="id" value=" """ + str(node.id) + """ ">
                            <button type="submit" class="w-100 btn btn-primary">supprimer</button>
                         </form>  """
-                        
+    form_fomat = """   <form action=" """ + reverse('adminin:form_format_formulation') + """ " method="get" class = "w-100"> 
+                           <input type="hidden" name="id" value=" """ + str(node.id) + """ ">
+                           <button type="submit" class="w-100 btn btn-primary">ajouter un format de formulation</button>
+                        </form>  """        
     
     form_add = """  
                     <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#__"""+str(node.id)+"""">
@@ -65,6 +68,7 @@ def node_tohtml(node):
                             </div>
                         </div>
                          """
+    
     if(n == 0):
         # on verifie si la feuille a deja ete defini comme feuille
         if len(Feuille.objects.filter(id=node.id)) != 0:
@@ -77,6 +81,7 @@ def node_tohtml(node):
                               </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                               <li class="dropdown-item">"""+form_delete+"""</li>
+                              <li class="dropdown-item">"""+form_fomat+"""</li>
                             </ul>
                         </div>
                          </div> """,

@@ -17,13 +17,12 @@ class Noeud(models.Model):
         
 class Feuille(Noeud):
     description = models.TextField(max_length=500, blank=True)
-    CHEMIN_FILE_FORMAT_FORMULATION = ""
     
      
-class formulation(models.Model):
+class Formulation(models.Model):
     format_formulation = models.CharField(max_length=400, blank=True)
-    
-    pass
+    caracteristiques = models.CharField(max_length=400, blank=True)
+    feuille = models.ForeignKey(Feuille, on_delete=models.CASCADE)
     
 class Caracteristique(models.Model):
     nom = models.CharField(max_length=50)
