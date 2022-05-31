@@ -2,6 +2,7 @@ import mysql.connector
 from modules.convert_audio.convert import convert_mp3
 from gtts import gTTS
 import sqlite3
+import datetime
 import conf as cf
 
 
@@ -57,13 +58,13 @@ def handle_IVR(agi):
     if length >= 1:
        repeat = True
        message = "voulez vous retourner au menu principale ? tapez 1 pour retourner . Tapez 2 pour quitter"
-       agi.verbose("---------------------------- condition ------")
+       #agi.verbose("---------------------------- condition ------")
        while repeat == True:
            id , user_rep = interact(agi , racines)
            handle_IVR_bis(agi, conn, id,
                           racines[user_rep - 1][1], racines[user_rep - 1][2])
            user_rep = handle_decision(agi , message)
-           agi.verbose("---------------------------- continue ------")
+           #agi.verbose("---------------------------- continue ------")
            if int(user_rep) == 1:
                repeat = True
            else:
@@ -85,11 +86,15 @@ def handle_IVR_bis(agi , conn , node_id , nom ,  question):
         message = "arriver sur une feuille"
         user_rep = read_message(message, cf.CHEMIN_AUDIOS_APP +
                             "/formulation.mp3", agi)
-        load_sheet(conn , agi , node_id)
-        
+        sheet_id = load_sheet(conn , agi , node_id)
+        if sheet_id == None:
+            message = "aucune information sur cette feuille"
+        else:
+            load_val_caracteristique(conn , agi , sheet_id)
+            
     else:
         id , user_rep = interact(agi , nodes)
-        agi.verbose(f"---------------------------- id : {id}  choix : {user_rep} nom : {nodes[user_rep - 1][1]} question : {nodes[user_rep - 1][2]}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------")
+        #agi.verbose(f"---------------------------- id : {id}  choix : {user_rep} nom : {nodes[user_rep - 1][1]} question : {nodes[user_rep - 1][2]}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------")
         handle_IVR_bis(agi, conn, id ,
                        nodes[user_rep - 1][1], nodes[user_rep - 1][2])
 
@@ -145,21 +150,25 @@ def load_sheet(mysql_conn, agi, id):
     else:
         return id
 
-def load_val_caracteristique(mysql_conn, agi, id=-1, racine=False):
+def load_val_caracteristique(mysql_conn, agi, id):
     result = []
     cursor = mysql_conn.cursor()
-    if racine == False:
-        cursor.execute(
-            """SELECT * FROM administration_noeud WHERE parent_id = {}""".format(id))
-    else:
-        cursor.execute(
-            """SELECT * FROM administration_noeud WHERE parent_id IS NULL""")
+    agi.verbose(f"**preparation de la requete pour avoir les valeurs de caracteristique **")
+    cursor.execute(
+        """SELECT administration_caracteristique.id , administration_caracteristique.nom , administration_caracteristique.type , enseignant_valcaracteristique.content , enseignant_information.delai
+                FROM administration_caracteristique , enseignant_valcaracteristique , enseignant_information 
+                WHERE
+                administration_caracteristique.id = enseignant_valcaracteristique.caracteristique_id AND
+                administration_caracteristique.feuille_id = {} AND 
+                enseignant_information.delai > {}
+                """.format(id, datetime.date.today()))
 
+    agi.verbose(f"** pass requete valeur de caracteristique **")
     rows = cursor.fetchall()
     for row in rows:
         node = (row[0], row[1], row[2])
-        # agi.verbose(
-        #     f"**     {row[0]} : {row[1]} , {row[2]} , {row[3]}         **")
+        agi.verbose(
+            f"**     {row[0]} : {row[1]} , {row[2]} , {row[3]}   **")
 
         result.append(node)
 
