@@ -1,0 +1,43 @@
+;demande;formulation
+0;pv INF142;les pv de INF142 sont-ils disponibles ?
+1;pv INF142;les pv de INF142 sont-ils déjà disponibles ?
+2;pv INF142;les pv d'INF142 sont t'il disponible
+3;pv INF142;on a déjà affiché les pv de INF142?
+4;pv INF142;les notes de INF142 sont sorties ? 
+5;pv INF112;les pv de INF112 sont-ils disponibles ?
+6;pv INF112;les pv de INF112 sont-ils déjà disponibles ?
+7;pv INF112;les pv d'INF112 sont t'il disponible
+8;pv INF112;on a déjà affiché les pv de INF112?
+9;pv INF112;les notes de INF112 sont sorties ? 
+10;pv INF122;les pv de INF122 sont-ils disponibles ?
+11;pv INF122;les pv de INF122 sont-ils déjà disponibles ?
+12;pv INF122;les pv d'INF122 sont t'il disponible
+13;pv INF122;on a déjà affiché les pv de INF122?
+14;pv INF122;les notes de INF122 sont sorties ? 
+15;programmation cours INF142;le td d'INF142 se passe où et à quelle heure?
+16;programmation cours INF142;quel jour le td de INF142 se fera et à quelle heure ?
+17;programmation cours INF142;on aurait td d'INF142 ?
+18;programmation cours INF142;td-INF142
+19;programmation cours INF112;le td d'INF112 se passe où et à quelle heure?
+20;programmation cours INF112;quel jour le td de INF112 se fera et à quelle heure ?
+21;programmation cours INF112;on aurait td d'INF112 ?
+22;programmation cours INF112;td-INF112
+23;programmation cours INF122;le td d'INF122 se passe où et à quelle heure?
+24;programmation cours INF122;quel jour le td de INF122 se fera et à quelle heure ?
+25;programmation cours INF122;on aurait td d'INF122 ?
+26;programmation cours INF122;td-INF122
+27;programmation TD INF142;"quand aura t-on cours de INF142?
+"
+28;programmation TD INF142;on aura d'INF142 ?
+29;programmation TD INF142;à quelle heure le td INF142 aura lieu?
+30;programmation TD INF112;"quand aura t-on cours de INF112?
+"
+31;programmation TD INF112;on aura d'INF112 ?
+32;programmation TD INF112;à quelle heure le td INF112 aura lieu?
+33;programmation TD INF122;"quand aura t-on cours de INF122?
+"
+34;programmation TD INF122;on aura d'INF122 ?
+35;programmation TD INF122;à quelle heure le td INF122 aura lieu?
+36;requete INF142;est-ce que les requêtes de INF142 ont été traités ?
+37;requete INF112;est-ce que les requêtes de INF112 ont été traités ?
+38;requete INF122;est-ce que les requêtes de INF122 ont été traités ?
