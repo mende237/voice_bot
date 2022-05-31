@@ -85,6 +85,7 @@ def handle_IVR_bis(agi , conn , node_id , nom ,  question):
         message = "arriver sur une feuille"
         user_rep = read_message(message, cf.CHEMIN_AUDIOS_APP +
                             "/formulation.mp3", agi)
+        load_sheet(conn , agi , node_id)
         
     else:
         id , user_rep = interact(agi , nodes)
@@ -129,7 +130,40 @@ def load_nodes(mysql_conn, agi, id=-1, racine=False):
     return result
 
 
+def load_sheet(mysql_conn, agi, id):
+    cursor = mysql_conn.cursor()
+    
+    cursor.execute(
+        """SELECT administration_noeud.id 
+                FROM administration_feuille INNER JOIN administration_noeud  
+                ON administration_noeud.id = administration_feuille.noeud_ptr_id
+                WHERE administration_noeud.id = {}""".format(id))
+    
+    rows = cursor.fetchall()
+    if len(rows) == 0:
+        return None
+    else:
+        return id
 
+def load_val_caracteristique(mysql_conn, agi, id=-1, racine=False):
+    result = []
+    cursor = mysql_conn.cursor()
+    if racine == False:
+        cursor.execute(
+            """SELECT * FROM administration_noeud WHERE parent_id = {}""".format(id))
+    else:
+        cursor.execute(
+            """SELECT * FROM administration_noeud WHERE parent_id IS NULL""")
+
+    rows = cursor.fetchall()
+    for row in rows:
+        node = (row[0], row[1], row[2])
+        # agi.verbose(
+        #     f"**     {row[0]} : {row[1]} , {row[2]} , {row[3]}         **")
+
+        result.append(node)
+
+    return result
 
 
 
