@@ -75,6 +75,7 @@ def handle_IVR(agi):
                repeat = False
     
     
+    
 def handle_IVR_bis(agi , conn , node_id , nom ,  question):
     message = ""
     if question == None or question == '':
@@ -95,8 +96,14 @@ def handle_IVR_bis(agi , conn , node_id , nom ,  question):
             message = "aucune information sur cette feuille"
         else:
             information = load_information(conn, agi, sheet_id)
-            agi.verbose(f"**          {information}            ******")
-            
+            if information == None:
+                message = "l'information sur cette feuille n'est plus valide"
+            else:
+                message = information
+                
+            agi.verbose(f"**          {information}           ******")
+            read_message(information, cf.CHEMIN_AUDIOS_APP +
+                                    "/formulation.mp3", agi , interrupt=False)
     else:
         id , user_rep = interact(agi , nodes)
         #agi.verbose(f"---------------------------- id : {id}  choix : {user_rep} nom : {nodes[user_rep - 1][1]} question : {nodes[user_rep - 1][2]}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------")
@@ -181,63 +188,71 @@ def load_information(mysql_conn, agi, id):
     
     agi.verbose(f"**        pass deux requetes   ******")
     formats_list = cursor.fetchall()
-    format = random.choice(formats_list)
+    #dans le cas ou il n'y a aucune valeur de carcaterisques
+    if len(val_caracteristiques) == 0:
+        return None
+    #dans le cas ou il n'y aucun format de formulation associe a la feuille en question
+    elif len(formats_list) == 0:
+        information = ""
+        for val_c in val_caracteristiques:
+            information += val_c[1] + " : " + val_c[2]
 
-    ids_list = format[1].split(";")
-    template = format[0]
-    order_val_caracteristique = []
+        return information
+    else:
+        format = random.choice(formats_list)
 
-    for id in ids_list:
-        order_val_caracteristique += [val_c for val_c in val_caracteristiques if int(id) in val_c]
+        ids_list = format[1].split(";")
+        template = format[0]
+        order_val_caracteristique = []
 
-    print(order_val_caracteristique)
+        for id in ids_list:
+            order_val_caracteristique += [val_c for val_c in val_caracteristiques if int(id) in val_c]
 
-    for val_c in order_val_caracteristique:
-        if val_c[3] != "date":
-            template = template.replace("[value]" , val_c[2] , 1)
-        else:
-            begin_index = []
-            for i in range(len(cf.DATE_FORMAT)):
-                begin_index.append(template.find(cf.DATE_FORMAT[i]))
-                
-            begin_index = np.array(begin_index)
-            begin_index = np.where(begin_index >= 0 , begin_index , len(template))
-            
-            print(begin_index)
-            pos = np.argmin(begin_index)
-            if cf.DATE_FORMAT[pos] == "[value]":
-                print(val_c[2])
-                template = template.replace("[value]", val_c[2], 1)
+        
+        for val_c in order_val_caracteristique:
+            if val_c[3] != "date":
+                template = template.replace("[value]" , val_c[2] , 1)
             else:
-                temp = cf.DATE_FORMAT[pos].lower()
-                date_part = val_c[2].split(" ")
-                first_part = date_part[0].split("-")
-                second_part = date_part[1].split(":")
-                replace_value = ""
-                print(temp)
-                if "yy".lower() in temp:
-                    replace_value = first_part[0]
-                elif "mm".lower() in temp:
-                    replace_value = first_part[1]
-                elif "dd".lower() in temp:
-                    replace_value = first_part[2]
-                elif "hh".lower() in temp:
-                    replace_value = second_part[0]
-                elif "mm".lower() in temp:
-                    replace_value = second_part[1]
+                begin_index = []
+                for i in range(len(cf.DATE_FORMAT)):
+                    begin_index.append(template.find(cf.DATE_FORMAT[i]))
+                    
+                begin_index = np.array(begin_index)
+                begin_index = np.where(begin_index >= 0 , begin_index , len(template))
+                
+                print(begin_index)
+                pos = np.argmin(begin_index)
+                if cf.DATE_FORMAT[pos] == "[value]":
+                    template = template.replace("[value]", val_c[2], 1)
                 else:
-                    replace_value = second_part[2]
+                    temp = cf.DATE_FORMAT[pos].lower()
+                    date_part = val_c[2].split(" ")
+                    first_part = date_part[0].split("-")
+                    second_part = date_part[1].split(":")
+                    replace_value = ""
+                    if "yy".lower() in temp:
+                        replace_value = first_part[0]
+                    elif "mm".lower() in temp:
+                        replace_value = first_part[1]
+                    elif "dd".lower() in temp:
+                        replace_value = first_part[2]
+                    elif "hh".lower() in temp:
+                        replace_value = second_part[0]
+                    elif "mm".lower() in temp:
+                        replace_value = second_part[1]
+                    else:
+                        replace_value = second_part[2]
 
-            template = template.replace(temp , replace_value)    
+                template = template.replace(temp , replace_value)    
 
-    
-        # for row in formats_list:
-        #     node = (row[0], row[1])
-        #     agi.verbose(
-        #         f"**     {row[0]} : {row[1]} **")
-        agi.verbose(f"**          {template}            ******")
+        
+            # for row in formats_list:
+            #     node = (row[0], row[1])
+            #     agi.verbose(
+            #         f"**     {row[0]} : {row[1]} **")
+            #agi.verbose(f"**          {template}            ******")
 
-    return template
+        return template
 
 
 
