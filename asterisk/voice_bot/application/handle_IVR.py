@@ -1,9 +1,13 @@
+from posixpath import split
 import mysql.connector
+from numpy import argmax
 from modules.convert_audio.convert import convert_mp3
 from gtts import gTTS
 import sqlite3
 import datetime
 import conf as cf
+import random
+import numpy as np
 
 
 def connect_mysql(host=cf.BD_HOST, user=cf.BD_USER, password=cf.BD_PASSWORD, database=cf.BD_NAME):
@@ -90,7 +94,8 @@ def handle_IVR_bis(agi , conn , node_id , nom ,  question):
         if sheet_id == None:
             message = "aucune information sur cette feuille"
         else:
-            load_val_caracteristique(conn , agi , sheet_id)
+            information = load_information(conn, agi, sheet_id)
+            agi.verbose(f"**          {information}            ******")
             
     else:
         id , user_rep = interact(agi , nodes)
@@ -150,12 +155,13 @@ def load_sheet(mysql_conn, agi, id):
     else:
         return id
 
-def load_val_caracteristique(mysql_conn, agi, id):
+def load_information(mysql_conn, agi, id):
     result = []
     cursor = mysql_conn.cursor()
     agi.verbose(f"**preparation de la requete pour avoir les valeurs de caracteristique **")
     cursor.execute(
-        """SELECT administration_caracteristique.id , administration_caracteristique.nom , administration_caracteristique.type , enseignant_valcaracteristique.content , enseignant_information.delai
+        #id pos 0                                      nom pos 1                            content pos 2                          type pos 3
+        """SELECT administration_caracteristique.id , administration_caracteristique.nom , enseignant_valcaracteristique.content , administration_caracteristique.type
                 FROM administration_caracteristique , enseignant_valcaracteristique , enseignant_information 
                 WHERE
                 administration_caracteristique.id = enseignant_valcaracteristique.caracteristique_id AND
@@ -163,16 +169,75 @@ def load_val_caracteristique(mysql_conn, agi, id):
                 enseignant_information.delai > {}
                 """.format(id, datetime.date.today()))
 
-    agi.verbose(f"** pass requete valeur de caracteristique **")
-    rows = cursor.fetchall()
-    for row in rows:
-        node = (row[0], row[1], row[2])
-        agi.verbose(
-            f"**     {row[0]} : {row[1]} , {row[2]} , {row[3]}   **")
+    val_caracteristiques = cursor.fetchall()
+    agi.verbose(f"**        pass premiere requete   ******")
+    
+    cursor.execute("""
+            SELECT format_formulation ,  caracteristiques
+            FROM administration_formulation 
+            WHERE
+                feuille_id = {}
+            """.format(id))
+    
+    agi.verbose(f"**        pass deux requetes   ******")
+    formats_list = cursor.fetchall()
+    format = random.choice(formats_list)
 
-        result.append(node)
+    ids_list = format[1].split(";")
+    template = format[0]
+    order_val_caracteristique = []
 
-    return result
+    for id in ids_list:
+        order_val_caracteristique += [val_c for val_c in val_caracteristiques if int(id) in val_c]
+
+    print(order_val_caracteristique)
+
+    for val_c in order_val_caracteristique:
+        if val_c[3] != "date":
+            template = template.replace("[value]" , val_c[2] , 1)
+        else:
+            begin_index = []
+            for i in range(len(cf.DATE_FORMAT)):
+                begin_index.append(template.find(cf.DATE_FORMAT[i]))
+                
+            begin_index = np.array(begin_index)
+            begin_index = np.where(begin_index >= 0 , begin_index , len(template))
+            
+            print(begin_index)
+            pos = np.argmin(begin_index)
+            if cf.DATE_FORMAT[pos] == "[value]":
+                print(val_c[2])
+                template = template.replace("[value]", val_c[2], 1)
+            else:
+                temp = cf.DATE_FORMAT[pos].lower()
+                date_part = val_c[2].split(" ")
+                first_part = date_part[0].split("-")
+                second_part = date_part[1].split(":")
+                replace_value = ""
+                print(temp)
+                if "yy".lower() in temp:
+                    replace_value = first_part[0]
+                elif "mm".lower() in temp:
+                    replace_value = first_part[1]
+                elif "dd".lower() in temp:
+                    replace_value = first_part[2]
+                elif "hh".lower() in temp:
+                    replace_value = second_part[0]
+                elif "mm".lower() in temp:
+                    replace_value = second_part[1]
+                else:
+                    replace_value = second_part[2]
+
+            template = template.replace(temp , replace_value)    
+
+    
+        # for row in formats_list:
+        #     node = (row[0], row[1])
+        #     agi.verbose(
+        #         f"**     {row[0]} : {row[1]} **")
+        agi.verbose(f"**          {template}            ******")
+
+    return template
 
 
 

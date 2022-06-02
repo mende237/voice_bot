@@ -13,3 +13,5 @@ BD_NAME = "voiceBot_db"
 PATH_BD = "/home/dimitri/voice_bot/backend/voiceBot/voiceBot.db.sqlite3"
 BD_HOST = "localhost"
 DEFAULT_MESSAGE = "avoir plus d'information sur le "
+DATE_FORMAT = []
+

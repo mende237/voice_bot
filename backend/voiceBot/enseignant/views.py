@@ -9,7 +9,8 @@ from enseignant.handle_teacher_tree import generate_hierachie
 
 # Create your views here.
 def ajouter_information(request):
-    id = 2
+    email = request.session['email']
+    id = Enseignant.objects.get(email = email).id
     date = datetime.datetime.strptime(
         request.GET['delai'], "%Y-%m-%d")
     
@@ -22,7 +23,7 @@ def ajouter_information(request):
             val = ValCaracteristique(
                 content=request.GET[r],information = info, caracteristique = get_object_or_404(Caracteristique , pk = int(r)))
             val.save()
-    return redirect('enseignant:view_form')
+    return redirect('enseignant:view_tree')
 
 def view_tree(request):
     hierarchie = generate_hierachie()
@@ -33,9 +34,9 @@ def view_form(request):
     id = request.GET['id']
 
     infos = Information.objects.filter(valcaracteristique__caracteristique__feuille__id = id)
-    # for info in infos:
-    #     if info.delai > datetime.date.today():
-    #         return render(request, 'fill.html')
+    for info in infos:
+        if info.delai > datetime.date.today():
+            return render(request, 'fill.html')
         
     #print("enter*********************************************************************")
     caracteristiques = Caracteristique.objects.filter(feuille_id=id)

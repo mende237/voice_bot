@@ -186,6 +186,7 @@ def signinTeacher(request):
         if(Enseignant.objects.filter(name=username) and Enseignant.objects.filter(password=pass1) and Enseignant.objects.filter(email=email)):
             messages.success(request, "Logged In Sucessfully!!")
             request.session['name'] = username
+            request.session['email'] = email
             return redirect('enseignant:view_tree')
         else :
             messages.error(request, "Error during authentification")
