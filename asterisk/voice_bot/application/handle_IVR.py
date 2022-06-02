@@ -1,6 +1,4 @@
-from posixpath import split
 import mysql.connector
-from numpy import argmax
 from modules.convert_audio.convert import convert_mp3
 from gtts import gTTS
 import sqlite3
@@ -21,12 +19,9 @@ def connect_sqlite(database=cf.PATH_BD):
     return conn
 
 
-def greet(agi, welcome_message="bienvenu dans notre programme d'accès à l'information"):
-    read_message(welcome_message, cf.CHEMIN_AUDIOS_APP +
-                 "/welcome.mp3", agi , interrupt = False)
+
     
-def handle_decision(agi , message):
-    values = ['1' , '2']
+def handle_decision(agi , message , values = ['1' , '2']):
     user_rep = ''
     while user_rep not in values:
         user_rep = read_message(message , cf.CHEMIN_AUDIOS_APP +
@@ -58,7 +53,6 @@ def handle_IVR(agi):
     conn = connect_sqlite()
     racines = load_nodes(conn, agi, racine=True)
     length = len(racines)
-    greet(agi)
     if length >= 1:
        repeat = True
        message = "voulez vous retourner au menu principale ? tapez 1 pour retourner . Tapez 2 pour quitter"
@@ -206,21 +200,20 @@ def load_information(mysql_conn, agi, id):
         order_val_caracteristique = []
 
         for id in ids_list:
-            order_val_caracteristique += [val_c for val_c in val_caracteristiques if int(id) in val_c]
+            order_val_caracteristique += [
+                val_c for val_c in val_caracteristiques if int(id) in val_c]
 
-        
         for val_c in order_val_caracteristique:
             if val_c[3] != "date":
-                template = template.replace("[value]" , val_c[2] , 1)
+                template = template.replace("[value]", val_c[2], 1)
             else:
-                begin_index = []
-                for i in range(len(cf.DATE_FORMAT)):
-                    begin_index.append(template.find(cf.DATE_FORMAT[i]))
-                    
+                #on recherche les idex des premieres occurences de tous les formats de date
+                begin_index = [template.find(cf.DATE_FORMAT[i])
+                            for i in range(len(cf.DATE_FORMAT))]
+
                 begin_index = np.array(begin_index)
-                begin_index = np.where(begin_index >= 0 , begin_index , len(template))
-                
-                print(begin_index)
+                begin_index = np.where(begin_index >= 0, begin_index, len(template))
+
                 pos = np.argmin(begin_index)
                 if cf.DATE_FORMAT[pos] == "[value]":
                     template = template.replace("[value]", val_c[2], 1)
@@ -243,14 +236,7 @@ def load_information(mysql_conn, agi, id):
                     else:
                         replace_value = second_part[2]
 
-                template = template.replace(temp , replace_value)    
-
-        
-            # for row in formats_list:
-            #     node = (row[0], row[1])
-            #     agi.verbose(
-            #         f"**     {row[0]} : {row[1]} **")
-            #agi.verbose(f"**          {template}            ******")
+                    template = template.replace(temp, replace_value)
 
         return template
 
