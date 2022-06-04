@@ -5,6 +5,7 @@ from unittest.mock import DEFAULT
 
 CHEMIN_FICHIER_APP = "/home/dimitri/voice_bot/asterisk/voice_bot"
 CHEMIN_AUDIOS_APP = "/home/dimitri/voice_bot/asterisk/voice_bot/data/audios"
+REAL_PATH_AUDIO = CHEMIN_AUDIOS_APP + "{nom}{thread_id}.mp3"
 
 # parametres liees a la base de donnees
 BD_USER = "root"

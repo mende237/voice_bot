@@ -1,3 +1,4 @@
+from time import thread_time
 import mysql.connector
 from modules.convert_audio.convert import convert_mp3
 from gtts import gTTS
@@ -6,6 +7,7 @@ import datetime
 import conf as cf
 import random
 import numpy as np
+
 
 
 def connect_mysql(host=cf.BD_HOST, user=cf.BD_USER, password=cf.BD_PASSWORD, database=cf.BD_NAME):
@@ -20,12 +22,12 @@ def connect_sqlite(database=cf.PATH_BD):
 
 
 
-    
-def handle_decision(agi , message , values = ['1' , '2']):
+     
+def handle_decision(agi , message , file_path , values = ['1' , '2']):
     user_rep = ''
     while user_rep not in values:
-        user_rep = read_message(message , cf.CHEMIN_AUDIOS_APP +
-                            "/formulation.mp3", agi)
+        user_rep = read_message(message, file_path , agi)
+        
     return user_rep
 
 
@@ -38,13 +40,13 @@ def interact(agi, nodes):
         
     
     formulation = formulate(nodes)
-    user_rep = read_message(formulation, cf.CHEMIN_AUDIOS_APP +
-                            "/formulation.mp3", agi)
+    user_rep = read_message(formulation, cf.REAL_PATH_AUDIO.format(
+        nom="/formulation", thread_id=agi.env["agi_threadid"]), agi)
     
     # on repete ca tant que l'utilisateur n'entre rien ou un mauvais choix
     while user_rep not in values:
-        user_rep = read_message(formulation, cf.CHEMIN_AUDIOS_APP +
-                                "/formulation.mp3", agi)
+        user_rep = read_message(formulation, cf.REAL_PATH_AUDIO.format(
+            nom="/formulation", thread_id=agi.env["agi_threadid"]), agi)
         
     return nodes[int(user_rep)-1][0] , int(user_rep)
 
@@ -61,7 +63,8 @@ def handle_IVR(agi):
            id , user_rep = interact(agi , racines)
            handle_IVR_bis(agi, conn, id,
                           racines[user_rep - 1][1], racines[user_rep - 1][2])
-           user_rep = handle_decision(agi , message)
+           user_rep = handle_decision(agi, message, cf.REAL_PATH_AUDIO.format(
+               nom="/formulation", thread_id=agi.env["agi_threadid"]))
            #agi.verbose("---------------------------- continue ------")
            if int(user_rep) == 1:
                repeat = True
@@ -77,27 +80,29 @@ def handle_IVR_bis(agi , conn , node_id , nom ,  question):
     else:
         message = question
         
-    read_message(message, cf.CHEMIN_AUDIOS_APP + "/formulation.mp3", agi , interrupt=False)
+    read_message(message, cf.REAL_PATH_AUDIO.format(
+        nom="/formulation", thread_id=agi.env["agi_threadid"]), agi, interrupt=False)
     nodes = load_nodes(conn, agi , id = node_id)
     
     length = len(nodes)
     if(length == 0):
         message = "arriver sur une feuille"
-        user_rep = read_message(message, cf.CHEMIN_AUDIOS_APP +
-                            "/formulation.mp3", agi)
+        user_rep = read_message(message, cf.REAL_PATH_AUDIO.format(
+            nom="/formulation", thread_id=agi.env["agi_threadid"]), agi)
         sheet_id = load_sheet(conn , agi , node_id)
         if sheet_id == None:
             message = "aucune information sur cette feuille"
         else:
             information = load_information(conn, agi, sheet_id)
+            #agi.verbose(f"**          {information}           ******")
             if information == None:
                 message = "l'information sur cette feuille n'est plus valide"
             else:
                 message = information
                 
-            agi.verbose(f"**          {information}           ******")
-            read_message(information, cf.CHEMIN_AUDIOS_APP +
-                                    "/formulation.mp3", agi , interrupt=False)
+            #agi.verbose(f"**          {information}           ******")
+            read_message(message, cf.REAL_PATH_AUDIO.format(
+                nom="/formulation", thread_id=agi.env["agi_threadid"]), agi, interrupt=False)
     else:
         id , user_rep = interact(agi , nodes)
         #agi.verbose(f"---------------------------- id : {id}  choix : {user_rep} nom : {nodes[user_rep - 1][1]} question : {nodes[user_rep - 1][2]}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------")
@@ -107,7 +112,6 @@ def handle_IVR_bis(agi , conn , node_id , nom ,  question):
 
 def read_message(message, file_path, agi, interrupt = True):
     tts = gTTS(message, lang='fr')
-    agi.verbose(f"***     {file_path}        ***")
     tts.save(file_path)
 
     new_file = file_path.replace('.mp3', '.wav')
@@ -159,7 +163,7 @@ def load_sheet(mysql_conn, agi, id):
 def load_information(mysql_conn, agi, id):
     result = []
     cursor = mysql_conn.cursor()
-    agi.verbose(f"**preparation de la requete pour avoir les valeurs de caracteristique **")
+    # agi.verbose(f"**preparation de la requete pour avoir les valeurs de caracteristique **")
     cursor.execute(
         #id pos 0                                      nom pos 1                            content pos 2                          type pos 3
         """SELECT administration_caracteristique.id , administration_caracteristique.nom , enseignant_valcaracteristique.content , administration_caracteristique.type
@@ -171,7 +175,7 @@ def load_information(mysql_conn, agi, id):
                 """.format(id, datetime.date.today()))
 
     val_caracteristiques = cursor.fetchall()
-    agi.verbose(f"**        pass premiere requete   ******")
+    # agi.verbose(f"**        pass premiere requete   ******")
     
     cursor.execute("""
             SELECT format_formulation ,  caracteristiques
@@ -180,7 +184,7 @@ def load_information(mysql_conn, agi, id):
                 feuille_id = {}
             """.format(id))
     
-    agi.verbose(f"**        pass deux requetes   ******")
+    # agi.verbose(f"**        pass deux requetes   ******")
     formats_list = cursor.fetchall()
     #dans le cas ou il n'y a aucune valeur de carcaterisques
     if len(val_caracteristiques) == 0:
