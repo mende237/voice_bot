@@ -1,4 +1,3 @@
-import re
 import speech_recognition as sr
 from handle_IVR import handle_decision, read_message
 import conf as cf
@@ -10,7 +9,8 @@ def create_sample_from_test_file(file_name):
         return sr.AudioData(
             source.stream.read(), wavfile.SAMPLE_RATE,
             wavfile.SAMPLE_WIDTH)
-        
+
+       
 def load_model(file_model):
     vocabulary = pickle.load(open(cf.PATH_MODEL +"/" +file_model , 'rb'))
     model = pickle.load(
@@ -44,7 +44,8 @@ def handle_direct_question(agi):
         text = r.recognize_google(audio_data, language="fr-FR")
         question_converted = vocabulary.transform([text])
         intent = model.predict(question_converted)
-        
+        read_message("votre intension est " + intent[0] , cf.REAL_PATH_AUDIO.format(
+        nom="/formulation", thread_id=agi.env["agi_threadid"]), agi, interrupt=False)
         agi.verbose(f"**          {intent}           ******")
     except Exception as e:
         agi.verbose(f"**         {e}          ******")
