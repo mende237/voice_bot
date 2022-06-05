@@ -2,7 +2,7 @@
 # chemin de fichier de sauvegarde des fichiers de l'application
 from unittest.mock import DEFAULT
 
-
+PATH_MODEL = "/home/dimitri/voice_bot/asterisk/voice_bot/application/modeles"
 CHEMIN_FICHIER_APP = "/home/dimitri/voice_bot/asterisk/voice_bot"
 CHEMIN_AUDIOS_APP = "/home/dimitri/voice_bot/asterisk/voice_bot/data/audios"
 REAL_PATH_AUDIO = CHEMIN_AUDIOS_APP + "{nom}{thread_id}.mp3"

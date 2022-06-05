@@ -1,7 +1,8 @@
+import re
 import speech_recognition as sr
 from handle_IVR import handle_decision, read_message
 import conf as cf
-
+import pickle
 
 def create_sample_from_test_file(file_name):
     wavfile = sr.WavFile(file_name)
@@ -9,8 +10,16 @@ def create_sample_from_test_file(file_name):
         return sr.AudioData(
             source.stream.read(), wavfile.SAMPLE_RATE,
             wavfile.SAMPLE_WIDTH)
-
+        
+def load_model(file_model):
+    vocabulary = pickle.load(open(cf.PATH_MODEL +"/" +file_model , 'rb'))
+    model = pickle.load(
+        open(cf.PATH_MODEL + "/model_naive_baye.sav", 'rb'))
+    return (vocabulary , model)
+    
+  
 def handle_direct_question(agi):
+    vocabulary, model = load_model("convertion_model.sav")
     user_rep = ""
     file_path = cf.REAL_PATH_AUDIO.format(nom="/question", thread_id=agi.env["agi_threadid"])
     file_path = file_path.replace(".mp3" , "")
@@ -31,11 +40,12 @@ def handle_direct_question(agi):
     r = sr.Recognizer()
     rep_asterisk = agi.record_file(file_path , format = "wav", escape_digits = "2", timeout=60000)
     audio_data = create_sample_from_test_file(file_path+'.wav')
-    agi.verbose(f"********            pass creation audio data        **********")
     try:
         text = r.recognize_google(audio_data, language="fr-FR")
-        agi.verbose(f"********            pass asr         **********")
-        agi.verbose(f"**          {text}           ******")
+        question_converted = vocabulary.transform([text])
+        intent = model.predict(question_converted)
+        
+        agi.verbose(f"**          {intent}           ******")
     except Exception as e:
         agi.verbose(f"**         {e}          ******")
     
