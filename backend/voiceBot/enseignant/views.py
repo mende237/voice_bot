@@ -10,7 +10,9 @@ from enseignant.handle_teacher_tree import generate_hierachie
 # Create your views here.
 def ajouter_information(request):
     email = request.session['email']
+    print(f"l'email est {email}")
     id = Enseignant.objects.get(email = email).id
+    print(f"l'identifiant est {id}")
     date = datetime.datetime.strptime(
         request.GET['delai'], "%Y-%m-%d")
     
@@ -68,13 +70,15 @@ def make_input(caracteristique):
         type = 'number'
     elif caracteristique.type == '4':
         type = 'text'
-    else:
+    elif caracteristique.type == '1':
         type = 'date'
+    else:
+        type = 'time'
         
-   
-    result = """<div class = "mb-3 row" ><label for = "staticEmail" class = "col-sm-2 col-form-label"> """ + caracteristique.nom + """ </label >
+    
+    result = f"""<div class = "mb-3 row" ><label for = "staticEmail" class = "col-sm-2 col-form-label">{caracteristique.nom}</label >
                     <div class = "col-sm-10">
-                        <input type = " """ + type + """" name = " """ + str(caracteristique.id) + """ " """ + """> 
+                        <input type = "{type}" name = "{str(caracteristique.id)}"> 
                     </div >
                 </div>"""
     return result

@@ -1,4 +1,3 @@
-from time import thread_time
 import mysql.connector
 from modules.convert_audio.convert import convert_mp3
 from gtts import gTTS
@@ -19,8 +18,6 @@ def connect_mysql(host=cf.BD_HOST, user=cf.BD_USER, password=cf.BD_PASSWORD, dat
 def connect_sqlite(database=cf.PATH_BD):
     conn = sqlite3.connect(database)
     return conn
-
-
 
      
 def handle_decision(agi , message , file_path , values = ['1' , '2']):
