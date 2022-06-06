@@ -6,27 +6,27 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load static %}
-    
+
     <!-- ICON -->
     {% block icon %}
     {% endblock %}
-    
-    
+
+
     <title>{% block titre %}{% endblock %}</title>
     <!-- CSS -->
     {% block style %}
-    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}" >
-    <link rel="stylesheet" href="{% static 'assets/font-awesome-4.1.0/css/font-awesome.min.css' %}" >
-    
+    <link href="{% static 'assets/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
- 
+
     <!-- Custom styles for this template-->
-    <link rel="stylesheet" href="{% static 'css/sb-admin-2.min.css' %}" > 
+    <link rel="stylesheet" href="{% static 'css/sb-admin-2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <style>
-        a:hover{
-            text-decoration: none;  
+        a:hover {
+            text-decoration: none;
         }
     </style>
     {% endblock %}
@@ -40,51 +40,64 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'adminin:Home' %}">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fa fa-solid fa-face-laugh"></i>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center my-4" href="{% url 'adminin:Home' %}">
+                <div class="sidebar-brand-icon">
+                    <div class="logo">
+                        <img src="{% static 'assets/img/easy_white_bulle.png' %}" alt="..." srcset="">
+                    </div>
                 </div>
-                <div class="sidebar-brand-text mx-3">EasyInformation</div>
+                <h3 class="sidebar-brand-text">
+                    Easy Info
+                </h3>
             </a>
 
-            <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <li class="nav-item {{ active_admin_load }}">
                 <a class="nav-link" href="{% url 'adminin:Home' %}">
-                    <i class="fa fa-tachometer"></i>
-                    <span>Structure d'informations</span></a>
+                    <i class="fa fa-fw fa-sitemap"></i>
+                    <span>Arborescence</span></a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'administration:add_admin' %} ">
-
-                    <i class="fa fa-tachometer"></i>
-                    <span>Ajouter un administrateur</span></a>
-            </li>
+            <!--
+            
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'administration:add_admin' %} ">
+    
+                        <i class="fa fa-tachometer"></i>
+                        <span>add other admin</span></a>
+                </li>
+            
+                <a class="nav-link collapsed" href="{% url 'administration:add_teacher' %}" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fa fa-cog"></i>
+                    <span>Add Teacher</span>
+                </a>
+            -->
 
             <!-- Divider -->
             <hr class="sidebar-divider">
 
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Gestion des comptes
+            </div>
+            
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{% url 'administration:add_teacher' %}" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fa fa-person-chalkboard"></i>
-                    <span>Ajouter un enseignant</span>
+            <li class="nav-item {{active_admin_account}}">
+                <a class="nav-link" href="{% url 'adminin:account_admin' %}">
+                    <i class="fa fa-fw fa-user-tie"></i>
+                    <span>Administrateurs</span>
                 </a>
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                aria-expanded="true" aria-controls="collapseTwo">
-                <i class="fa fa-cog"></i>
-                <span>Supprimer un administrateur</span>
-                </a>
+            </li>
 
-               <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-               aria-expanded="true" aria-controls="collapseTwo">
-               <i class="fa fa-cog"></i>
-               <span>Supprimer un enseignant</span>
-                  </a>
-           </li>
+            <li class="nav-item {{active_admin_ens}}">
+                <a class="nav-link" href="{% url 'adminin:account_ens' %}">
+                    <i class="fa fa-fw fa-chalkboard-teacher"></i>
+                    <span>Enseignants</span>
+                </a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -93,46 +106,26 @@
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
 
-       
         </ul>
         {% endblock %}
-        
         <div id="content-wrapper" class="d-flex flex-column back">
             <!-- Main Content -->
             <div class="content">
-            
+
                 <!-- ENTETE -- Topbar -->
                 {% block entete %}
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-    
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-    
-                    <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-    
+
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <li> 
-                            
+                        <li>
                             <div style="display: flex ;justify-content: space-between ">
-                            <div style="background-color: black; margin: 15px;padding: 8px"> Hello {{adminName}}</div>
-                            <div style="background-color: aqua;margin: 15px;padding: 8px">photo</div>
-                            <div style="background-color: red;margin: 15px; padding: 8px;">modifier</div>
-                        </div></li>
+                                <div style="background-color: black; margin: 15px;padding: 8px"> Hello {{adminName}}
+                                </div>
+                                <div style="background-color: aqua;margin: 15px;padding: 8px">photo</div>
+                                <div style="background-color: red;margin: 15px; padding: 8px;">modifier</div>
+                            </div>
+                        </li>
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                         <li class="nav-item dropdown no-arrow d-sm-none">
                             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
@@ -157,56 +150,47 @@
                             </div>
                         </li>
                     </ul>
-    
+
                 </nav>
                 {% endblock %}
-                
+
                 <!-- CORPS -- Begin Page Content -->
                 <div class="content-fluid">
-                {% block corps %}
-                {% endblock%}
+                    {% block corps %}
+                    {% endblock%}
                 </div>
             </div>
-            
-            <!-- PIED DE PAGE -->
-            {% block footer %}
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
-                    </div>
-                </div>
-            </footer>
-            {% endblock %}
+
         </div>
     </div>
     {% else %}
     <div class="jumbotron">
-        <p style="text-align: center; font-weight: bold; color: black; font-size: 30px;">OUps!!!! vous n'avez pas le droit d'acceder à cette page sans etre authentifié</p>
+        <p style="text-align: center; font-weight: bold; color: black; font-size: 30px;">OUps!!!! vous n'avez pas le
+            droit d'acceder à cette page sans etre authentifié</p>
     </div>
-    {% endif %} 
+    {% endif %}
 
-    <!-- LE PRELOADER -->
-    {% block preloader %}
+    {% block scroller %}
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
     {% endblock %}
-        
+
     {% block secondblock %}
     {% endblock %}
-    
+
     <!-- JS -->
     {% block javascript %}
     <!-- Bootstrap core JavaScript-->
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
- 
+
     <!-- Core plugin JavaScript-->
-    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
- 
+    <script src="{% static 'assets/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
     <!-- Custom scripts for all pages-->
-    <script src="{% static 'js/sb-admin-2.min.js'%}"></script>
- 
-    <!-- Page level plugins -->
-    <script src="{% static 'vendor/chart.js/Chart.min.js'%}"></script>
+    <script src="{% static 'assets/js/sb-admin-2.min.js'%}"></script>
     {% endblock %}
 </body>
 

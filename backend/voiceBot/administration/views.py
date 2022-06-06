@@ -15,14 +15,14 @@ from django.utils.encoding import force_bytes, force_str, force_text
 from enseignant.models import Enseignant
 
 from django.core import serializers
-from administration.models import Caracteristique, Feuille, Formulation, Noeud
+from administration.models import Administrateur, Caracteristique, Feuille, Formulation, Noeud
 from administration.utils import *
 
 
 def home(request):
     hierarchie = generate_hierachie()
    # print(request.session["fname"])
-    return render(request, "home.html", {'hierarchie': hierarchie})
+    return render(request, "home.html", {'hierarchie': hierarchie, 'active_admin_load': "active"})
 
 
 def create_leaf(request):
@@ -221,3 +221,26 @@ def add_teacher(request):
         print("ajout reussi")
         return redirect('administration:Home')
     return render(request, "add_Teacher.html")
+    
+# vue pour voir tous les administrateurs
+def account_ens(request):
+    enss = Enseignant.objects.all()
+    context = { 'enss':enss, 'active_admin_ens': "active"}
+    return render(request, "admin/account_ens.html", context)
+
+# vue pour voir tous les enseignants
+def account_admin(request):
+    admins = Administrateur.objects.all()
+    context = { 'admins':admins, 'active_admin_account': "active"}
+    return render(request, "admin/account_admin.html", context)
+    
+def delete_admin(request, id):
+    admin = get_object_or_404(Administrateur, pk=int(id))
+    admin.delete()
+    return redirect('administration:account_admin')
+
+def delete_ens(request, id):
+    ens = get_object_or_404(Enseignant, pk=int(id))
+    ens.delete()
+    return redirect('administration:account_ens')
+    
