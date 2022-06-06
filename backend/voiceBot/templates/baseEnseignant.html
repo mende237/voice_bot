@@ -24,7 +24,7 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link rel="stylesheet" href="{% static 'css/sb-admin-2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/sb-admin-2.min.css' %}">
     <style>
         a:hover {
             text-decoration: none;
@@ -40,7 +40,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href={% url 'enseignant:view_tree' %}>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'enseignant:view_tree' %}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fa-solid fa-face-laugh"></i>
                 </div>
@@ -52,7 +52,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href = {% url 'enseignant:view_tree' %} >
+                <a class="nav-link" href = "{% url 'enseignant:view_tree' %} ">
                     <i class="fa fa-tachometer"></i>
                     <span>Tree</span></a>
             </li>
@@ -151,28 +151,20 @@
             {% endblock %}
         </div>
     </div>
-    <!-- LE PRELOADER -->
-    {% block preloader %}
-    {% endblock %}
 
     {% block secondblock %}
     {% endblock %}
 
-    <!-- JS -->
     {% block javascript %}
     <!-- Bootstrap core JavaScript-->
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="{% static 'js/sb-admin-2.min.js'%}"></script>
-
-    <!-- Page level plugins -->
-    <script src="{% static 'vendor/chart.js/Chart.min.js'%}"></script>
-
+    <script src="{% static 'assets/js/sb-admin-2.min.js'%}"></script>
     {% endblock %}
 </body>
 

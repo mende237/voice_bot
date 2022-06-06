@@ -10,11 +10,11 @@
         </div>
         <div class="card-body">
             <div class=" mb-4">
-                <a href="#"
+                <a href="{% url 'administration:add_teacher' %}"
                     class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                         class="fa fa-user-plus fa-sm text-white-75"></i> ajouter un enseignant</a>
             </div>
-    
+
             <div class="table-responsive">
                 <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                     <div class="row">
@@ -37,10 +37,11 @@
                                     <tr>
                                         <td>
                                             {% if ens.image %}
-                                            <img src="{{ens.image.url }}" style="max-height: 55px;" class="rounded-circle" alt="...">
+                                            <img src="{{ens.image.url }}" style="max-height: 55px;"
+                                                class="rounded-circle" alt="...">
                                             {% else %}
                                             <img src="{% static 'assets/img/undraw_profile.svg' %}"
-                                                style="max-height: 55px;"  class="rounded-circle" alt="...">
+                                                style="max-height: 55px;" class="rounded-circle" alt="...">
                                             {% endif %}
                                         </td>
                                         <td><span class="d-block py-2">{{ ens.username }}</span></td>
@@ -75,18 +76,18 @@
 
 {% block javascript %}
 <!-- Bootstrap core JavaScript-->
-<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'assets/vendor/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+<script src="{% static 'assets/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="{% static 'js/sb-admin-2.min.js'%}"></script>
+<script src="{% static 'assets/js/sb-admin-2.min.js'%}"></script>
 
 <!-- Page level plugins -->
-<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
-<script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'assets/vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'assets/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
 
 <script src="{% static 'js/perso/table.js' %}"></script>
 {% endblock %}

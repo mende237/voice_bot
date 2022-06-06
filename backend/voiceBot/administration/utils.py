@@ -8,15 +8,15 @@ def node_tohtml(node):
 
     form_delete = """   <form action=" """ + reverse('adminin:delete_noeud') + """ " method="get" class = "w-100"> 
                            <input type="hidden" name="id" value=" """ + str(node.id) + """ ">
-                           <button type="submit" class="w-100 btn btn-sm">supprimer</button>
+                           <button type="submit" class="w-100 btn btn-sm rounded-0 btn-primary">supprimer</button>
                         </form>  """
     form_fomat = """   <form action=" """ + reverse('adminin:form_format_formulation') + """ " method="get" class = "w-100"> 
                            <input type="hidden" name="id" value=" """ + str(node.id) + """ ">
-                           <button type="submit" class="w-100 btn btn-sm">ajouter un format de formulation</button>
+                           <button type="submit" class="w-100 btn btn-sm rounded-0 btn-primary">ajouter un format de formulation</button>
                         </form>  """        
     
     form_add = """  
-                    <button type="button" class="btn btn-sm w-100" data-bs-toggle="modal" data-bs-target="#__"""+str(node.id)+"""">
+                    <button type="button" class="btn btn-sm rounded-0 btn-primary w-100" data-bs-toggle="modal" data-bs-target="#__"""+str(node.id)+"""">
                         ajouter
                     </button>
                     
@@ -45,7 +45,7 @@ def node_tohtml(node):
     
                 """
     form_define_feuille = """
-                        <button class="btn btn-sm w-100" data-bs-toggle="modal" data-bs-target="#___"""+str(node.id)+"""">
+                        <button class="btn btn-sm rounded-0 btn-primary w-100" data-bs-toggle="modal" data-bs-target="#___"""+str(node.id)+"""">
                             definir comme feuille
                         </button>
                         """

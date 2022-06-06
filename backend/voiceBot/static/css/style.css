@@ -13,6 +13,9 @@
     height: 100%;
 }
 .list_node{
-    border-left: 5px rgb(22, 148, 180) solid;
+    border-left: 2.5px rgb(22, 148, 180) solid;
     padding-left: 1rem;
+}
+a:hover {
+    text-decoration: none;
 }
