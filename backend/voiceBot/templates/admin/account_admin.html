@@ -37,10 +37,10 @@
                                     <tr>
                                         <td>
                                             {% if admin.image %}
-                                            <img src="{{admin.image.url }}" style="max-height: 55px;" class="rounded-circle" alt="...">
+                                            <img src="{{admin.image.url }}"  class="rounded-circle photo_table" alt="...">
                                             {% else %}
                                             <img src="{% static 'assets/img/undraw_profile.svg' %}"
-                                                style="max-height: 55px;" class="rounded-circle" alt="...">
+                                                 class="rounded-circle photo_table" alt="...">
                                             {% endif %}
                                         </td>
                                         <td><span class="d-block py-2">{{ admin.username }}</span></td>

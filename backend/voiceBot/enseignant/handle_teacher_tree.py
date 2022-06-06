@@ -5,7 +5,7 @@ from django.urls import reverse
 def node_tohtml(node):
     children = node.noeud_set.all()
     n = len(children)
-    nom = "<h5 class=\"m-0\">" + node.nom + "</h5>"
+    nom = "<h5 class=\"m-0 mx-3\">" + node.nom + "</h5>"
 
     form_delete = """   <form action=" """ + reverse('enseignantin:view_form') +"""" method="get" class = "w-100"> 
                            <input type="hidden" name="id" value=" """ + str(node.id) + """ ">
@@ -17,7 +17,7 @@ def node_tohtml(node):
         if len(Feuille.objects.filter(id=node.id)) != 0:
             return """ <div class="d-flex align-items-center justify-content-between">
                              <div class="btn d-inline-flex align-items-center gap-2">
-                                 <i class="fa fa-leaf"></i> """ + nom + """
+                                 <i class="fa fa-file"></i> """ + nom + """
                              </div>
                              <div class="btn-group">
                             """+form_delete+"""
@@ -26,13 +26,13 @@ def node_tohtml(node):
         # construction de la vue d'une noeud terminal
         return """ <div class="d-flex align-items-center justify-content-between">
                              <div class="btn d-inline-flex align-items-center ">
-                                 <i class="fa fa-node"></i> """ + nom + """
+                                 <i class="fa fa-folder"></i> """ + nom + """
                              </div>
                          </div> """
                 
 
     # contruction du html noeud
-    icon = """<i class="fa fa-chevron-right"></i> """ if node.parent != None else """<i class="fa fa-code-fork"></i> """
+    icon = """<i class="fa fa-folder"></i> """ if node.parent != None else """<i class="fa fa-sitemap"></i> """
     result = """
             <ul class="list-unstyled m-0 py-1">
              <div class="d-flex align-items-center justify-content-between">
@@ -43,7 +43,7 @@ def node_tohtml(node):
              </div> """
 
     # > insertion des enfants
-    result += """ <div class="collapse border-start ps-2" id="_"""+str(node.id)+"""">
+    result += """ <div class="collapse list_node" id="_"""+str(node.id)+"""">
                     <ul class="list-unstyled">"""
 
     for child in children:

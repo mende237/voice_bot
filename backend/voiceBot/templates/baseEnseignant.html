@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
 
@@ -11,13 +11,10 @@
     {% block icon %}
     {% endblock %}
 
-
     <title>{% block titre %}{% endblock %}</title>
-
     <!-- CSS -->
     {% block style %}
-    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/font-awesome-4.1.0/css/font-awesome.min.css' %}">
+    <link href="{% static 'assets/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
 
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -25,85 +22,66 @@
 
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="{% static 'assets/css/sb-admin-2.min.css' %}">
-    <style>
-        a:hover {
-            text-decoration: none;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     {% endblock %}
 
 </head>
 
 <body>
+    {% if user.is_authenticated %}
     <div id="wrapper">
         {% block sidebar %}
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'enseignant:view_tree' %}">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fa-solid fa-face-laugh"></i>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center my-4" href="{% url 'adminin:Home' %}">
+                <div class="sidebar-brand-icon">
+                    <div class="logo">
+                        <img src="{% static 'assets/img/easy_white_bulle.png' %}" alt="..." srcset="">
+                    </div>
                 </div>
-                <div class="sidebar-brand-text mx-3">EasyInformation</div>
+                <h3 class="sidebar-brand-text">
+                    Easy Info
+                </h3>
             </a>
 
-            <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href = "{% url 'enseignant:view_tree' %} ">
-                    <i class="fa fa-tachometer"></i>
-                    <span>Tree</span></a>
+            <li class="nav-item {{ active_admin_load }}">
+                <a class="nav-link" href="{% url 'enseignant:view_tree' %}">
+                    <i class="fa fa-fw fa-sitemap"></i>
+                    <span>Arborescence</span></a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="#">
-                    <i class="fa fa-tachometer"></i>
-                    <span>add other admin</span></a>
-            </li>
-
-
-            <hr class="sidebar-divider">
-
-
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline" >
-                <button style="width: 60px; height: auto; color: rgb(255, 255, 255)" class="btn btn-link rounded-circle mr-0" id="sidebarToggle">  <i class="fa fa-bars"></i></button>
-                  
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-
 
         </ul>
         {% endblock %}
-
-        <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content-wrapper" class="d-flex flex-column back">
             <!-- Main Content -->
             <div class="content">
 
                 <!-- ENTETE -- Topbar -->
                 {% block entete %}
-                <nav class="navbar  navbar-expand navbar-light bg-wite topbar mb-4 static-top shadow">
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-                   
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <li> <div style="display: flex ;justify-content: space-between ">
-                            <div style="background-color: black; margin: 15px;padding: 8px"> Hello {{teacherName}}</div>
-                            <div style="background-color: aqua;margin: 15px;padding: 8px">
-                                <i class="fa fa-user" aria-hidden="true"></i></div>
-                            <div style="margin: 15px; padding: 8px; background-color: brown;">
-                              
-                                <a class="btn" href="{% url 'enseignant:modify_info' %}">  <i class="fa fa-edit"></i></a>
+                        <li>
+                            <div style="display: flex ;justify-content: space-between ">
+                                <div style="background-color: black; margin: 15px;padding: 8px"> Hello {{adminName}}
+                                </div>
+                                <div style="background-color: aqua;margin: 15px;padding: 8px">photo</div>
+                                <div style="background-color: red;margin: 15px; padding: 8px;">modifier</div>
                             </div>
-                        </div></li>
+                        </li>
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                         <li class="nav-item dropdown no-arrow d-sm-none">
                             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
@@ -139,22 +117,26 @@
                 </div>
             </div>
 
-            <!-- PIED DE PAGE -->
-            {% block footer %}
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Our Website 2022</span>
-                    </div>
-                </div>
-            </footer>
-            {% endblock %}
         </div>
     </div>
+    {% else %}
+    <div class="jumbotron">
+        <p style="text-align: center; font-weight: bold; color: black; font-size: 30px;">OUps!!!! vous n'avez pas le
+            droit d'acceder à cette page sans etre authentifié</p>
+    </div>
+    {% endif %}
+
+    {% block scroller %}
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    {% endblock %}
 
     {% block secondblock %}
     {% endblock %}
 
+    <!-- JS -->
     {% block javascript %}
     <!-- Bootstrap core JavaScript-->
     <script src="{% static 'assets/vendor/jquery/jquery.min.js' %}"></script>
@@ -167,5 +149,4 @@
     <script src="{% static 'assets/js/sb-admin-2.min.js'%}"></script>
     {% endblock %}
 </body>
-
 </html>

@@ -24,9 +24,7 @@
                                 <thead>
                                     <tr role="row">
                                         <th>photo</th>
-                                        <th>Nom d'utilisateur</th>
-                                        <th>Noms</th>
-                                        <th>Prenoms</th>
+                                        <th>Nom</th>
                                         <th>email</th>
                                         <th>mot de passe</th>
                                         <th>actions</th>
@@ -37,16 +35,14 @@
                                     <tr>
                                         <td>
                                             {% if ens.image %}
-                                            <img src="{{ens.image.url }}" style="max-height: 55px;"
-                                                class="rounded-circle" alt="...">
+                                            <img src="{{ens.image.url }}" 
+                                                class="rounded-circle photo_table" alt="...">
                                             {% else %}
                                             <img src="{% static 'assets/img/undraw_profile.svg' %}"
-                                                style="max-height: 55px;" class="rounded-circle" alt="...">
+                                                 class="rounded-circle photo_table" alt="...">
                                             {% endif %}
                                         </td>
-                                        <td><span class="d-block py-2">{{ ens.username }}</span></td>
-                                        <td><span class="d-block py-2">{{ ens.first_name }}</span></td>
-                                        <td><span class="d-block py-2">{{ ens.last_name }}</span></td>
+                                        <td><span class="d-block py-2">{{ ens.name }}</span></td>
                                         <td><span class="d-block py-2">{{ ens.email }}</span></td>
                                         <td><span class="d-block py-2">{{ ens.password }}</span></td>
                                         <td>
