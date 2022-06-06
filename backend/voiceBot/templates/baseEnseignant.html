@@ -53,27 +53,20 @@
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
                 <a class="nav-link" href = {% url 'enseignant:view_tree' %} >
-                    <i class="fa fa-tachometer"></i>
+                    <i class="fa fa-code-fork"></i>
                     <span>Tree</span></a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="#">
-                    <i class="fa fa-tachometer"></i>
+                    <i class="fa fa-user"></i>
                     <span>add other admin</span></a>
             </li>
 
 
-            <hr class="sidebar-divider">
-
-
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline" >
-                <button style="width: 60px; height: auto; color: rgb(255, 255, 255)" class="btn btn-link rounded-circle mr-0" id="sidebarToggle">  <i class="fa fa-bars"></i></button>
-                  
+                <i style="width: 60px; height: auto; color: rgb(255, 255, 255)" class="rounded-circle mr-0 fa fa-arrow-right" id="sidebarToggle">  </i>  
             </div>
 
 
@@ -139,16 +132,7 @@
                 </div>
             </div>
 
-            <!-- PIED DE PAGE -->
-            {% block footer %}
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Our Website 2022</span>
-                    </div>
-                </div>
-            </footer>
-            {% endblock %}
+   
         </div>
     </div>
     <!-- LE PRELOADER -->
