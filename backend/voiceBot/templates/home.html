@@ -3,34 +3,33 @@
 {% load static %}
 
 {% block corps %}
-
 <div class="container">
     <!-- Page Heading -->
     <div class=" mb-4">
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#______"><i
-                class="fa fa-folder-plus fa-sm text-white-75"></i> nouvelle arborecence</a>
-        </div>
-            <div class="modal fade" id="______" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <form action="{% url 'adminin:add_noeud' %}" class="m-1" method="get">
-                                <input type="hidden" name="id" value="">
-                                <div class="form-floating my-1">
-                                    <input type="text" class="form-control rounded-0" name="nom">
-                                    <label for="nom"> nom du nouveau noeud </label>
-                                </div>
-                                <div class="form-floating my-1">
-                                    <input type="text" class="form-control rounded-0" name="question">
-                                    <label for="question"> question du nouveau noeud </label>
-                                </div>
-                                <button type="submit" class="btn btn-primary m-1 border-0"><i
-                                        class="fa fa-trash3"></i>valider</button>
-                            </form>
+        <a href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm" data-bs-toggle="modal"
+            data-bs-target="#______"><i class="fa fa-folder-plus fa-sm text-white-75"></i> nouvelle arborecence</a>
+    </div>
+    <div class="modal fade" id="______" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form action="{% url 'adminin:add_noeud' %}" class="m-1" method="get">
+                        <input type="hidden" name="id" value="">
+                        <div class="form-floating my-1">
+                            <input type="text" class="form-control rounded-0" name="nom">
+                            <label for="nom"> nom du nouveau noeud </label>
                         </div>
-                    </div>
+                        <div class="form-floating my-1">
+                            <input type="text" class="form-control rounded-0" name="question">
+                            <label for="question"> question du nouveau noeud </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary m-1 border-0"><i
+                                class="fa fa-trash3"></i>valider</button>
+                    </form>
                 </div>
             </div>
+        </div>
+    </div>
     <div class="row">
         <!-- Area Chart -->
         <div class="col">

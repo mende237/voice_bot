@@ -15,7 +15,7 @@ from django.utils.encoding import force_bytes, force_str, force_text
 from enseignant.models import Enseignant
 
 from django.core import serializers
-from administration.models import Administrateur, Caracteristique, Feuille, Formulation, Noeud
+from administration.models import TYPE_CHOICES, Administrateur, Caracteristique, Feuille, Formulation, Noeud
 from administration.utils import *
 
 
@@ -75,10 +75,10 @@ def form_leaf(request):
         inputs += """
         <tr>
             <td>
-                <input type="text" class="w-100" name="nom_""" + str(i) + """">
+                <input type="text" class="form-control" name="nom_""" + str(i) + """">
             </td>
             <td>
-                <select class="form-select form-select-sm" name="type_""" + str(i) + """" id="">
+                <select class="form-select form-control form-select-sm" name="type_""" + str(i) + """" id="">
                     <option value="1">Date</option>
                     <option value="2">Entier</option>
                     <option value="3">Reel</option>
@@ -110,6 +110,20 @@ def ajouter_noeud(request):
         new_node.parent = parent
 
     new_node.save()
+    return redirect('administration:Home')
+
+
+def modif_noeud(request):
+    id = request.GET.get("id")
+    nom = request.GET.get("nom")
+    if nom == None or nom == "" or nom[0] == "":
+        return redirect('administration:Home')
+
+    question = request.GET['question']
+    noeud = get_object_or_404(Noeud, pk=int(id))
+    noeud.question =question
+    noeud.nom =nom
+    noeud.save()
     return redirect('administration:Home')
 
 
@@ -162,8 +176,10 @@ def add_format_formulation(request):
     form.save()
     return redirect("administration:Home")
 
+
 def add_admin(request):
     return render(request, "add_anotherAdmin.html")
+
 
 def add_teacher(request):
     if request.method == "POST":
@@ -221,26 +237,112 @@ def add_teacher(request):
         print("ajout reussi")
         return redirect('administration:Home')
     return render(request, "add_Teacher.html")
-    
+
 # vue pour voir tous les administrateurs
+
+
 def account_ens(request):
     enss = Enseignant.objects.all()
-    context = { 'enss':enss, 'active_admin_ens': "active"}
+    context = {'enss': enss, 'active_admin_ens': "active"}
     return render(request, "admin/account_ens.html", context)
 
 # vue pour voir tous les enseignants
+
+
 def account_admin(request):
     admins = Administrateur.objects.all()
-    context = { 'admins':admins, 'active_admin_account': "active"}
+    context = {'admins': admins, 'active_admin_account': "active"}
     return render(request, "admin/account_admin.html", context)
-    
+
+# action de suppresion d'un administrateur
+
+
 def delete_admin(request, id):
     admin = get_object_or_404(Administrateur, pk=int(id))
     admin.delete()
     return redirect('administration:account_admin')
 
+# action de suppression d'un enseignant
+
+
 def delete_ens(request, id):
     ens = get_object_or_404(Enseignant, pk=int(id))
     ens.delete()
     return redirect('administration:account_ens')
-    
+
+# vue de modification d'une feuille
+
+
+def modifier_feuille_vue(request, id_feuille):
+    feuille = get_object_or_404(Feuille, pk=int(id_feuille))
+    cars_f = Caracteristique.objects.filter(feuille=feuille)
+
+    cars = []
+    for car in cars_f:
+        type_ = ""
+        if car.type == "1":
+            type_ = "Date"
+        elif car.type == "2":
+            type_ = "Entier"
+        elif car.type == "3":
+            type_ = "Réel"
+        elif car.type == "4":
+            type_ = "Chaine de caratère"
+
+        cars.append({'nom': car.nom, 'type': type_, 'id': car.id})
+
+    context = {'cars': cars, 'active_admin_load': "active", "id_feuille": int(
+        id_feuille), 'nom': feuille.nom, 'description': feuille.description, "choices": TYPE_CHOICES}
+    return render(request, 'admin/modif_feuille.html', context)
+
+# action de suppression d'une feuille
+
+
+def modifier_feuille(request):
+    id_feuille_ = int(request.GET.get("id_feuille"))
+    feuille = get_object_or_404(Feuille, pk=id_feuille_)
+    nom = request.GET.get("nom")
+    description = request.GET.get("description")
+
+    feuille.nom = nom
+    feuille.description = description
+
+    feuille.save()
+    return redirect('administration:Home')
+
+# action de suppresion de caracteristiques
+
+
+def delete_caracteristique(request, id_feuille, id_car):
+    feuille = get_object_or_404(Feuille, pk=int(id_feuille))
+    cars_f = Caracteristique.objects.filter(feuille=feuille)
+    if len(cars_f) > 1:
+        car = get_object_or_404(Caracteristique, pk=int(id_car))
+        car.delete()
+    return redirect('administration:modifier_feuille_vue', id_feuille=int(id_feuille))
+
+# action de modificataion d'une caracteristique
+
+
+def modif_caracteristique(request):
+    id_feuille = int(request.GET.get("id_feuille"))
+    id_car = int(request.GET.get("id_car"))
+    nom = request.GET.get("nom")
+    type = request.GET.get("type")
+    car = get_object_or_404(Caracteristique, pk=int(id_car))
+    car.nom = nom
+    car.type = type
+    car.save()
+    return redirect('administration:modifier_feuille_vue', id_feuille=int(id_feuille))
+
+# action d'ajout d'une caracterisque
+
+
+def ajouter_caracteristique(request):
+    id_feuille = int(request.GET.get("id_feuille"))
+    feuille = get_object_or_404(Feuille, pk=id_feuille)
+    nom = request.GET.get("nom")
+    type = request.GET.get("type")
+    car = Caracteristique(nom=nom, type=type, feuille=feuille)
+    car.save()
+    return redirect('administration:modifier_feuille_vue', id_feuille=int(id_feuille))

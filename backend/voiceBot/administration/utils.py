@@ -1,6 +1,7 @@
 from django.urls import reverse
 from administration.models import Feuille, Noeud
 
+
 def node_tohtml(node):
     children = node.noeud_set.all()
     n = len(children)
@@ -8,15 +9,15 @@ def node_tohtml(node):
 
     form_delete = """   <form action=" """ + reverse('adminin:delete_noeud') + """ " method="get" class = "w-100"> 
                            <input type="hidden" name="id" value=" """ + str(node.id) + """ ">
-                           <button type="submit" class="w-100 btn btn-sm">supprimer</button>
+                           <button type="submit" class="w-100 btn btn-sm rounded-0 btn-primary">supprimer</button>
                         </form>  """
     form_fomat = """   <form action=" """ + reverse('adminin:form_format_formulation') + """ " method="get" class = "w-100"> 
                            <input type="hidden" name="id" value=" """ + str(node.id) + """ ">
-                           <button type="submit" class="w-100 btn btn-sm">ajouter un format de formulation</button>
-                        </form>  """        
-    
+                           <button type="submit" class="w-100 btn btn-sm rounded-0 btn-primary">ajouter un format de formulation</button>
+                        </form>  """
+
     form_add = """  
-                    <button type="button" class="btn btn-sm w-100" data-bs-toggle="modal" data-bs-target="#__"""+str(node.id)+"""">
+                    <button type="button" class="btn btn-sm rounded-0 btn-primary w-100" data-bs-toggle="modal" data-bs-target="#__"""+str(node.id)+"""">
                         ajouter
                     </button>
                     
@@ -45,7 +46,7 @@ def node_tohtml(node):
     
                 """
     form_define_feuille = """
-                        <button class="btn btn-sm w-100" data-bs-toggle="modal" data-bs-target="#___"""+str(node.id)+"""">
+                        <button class="btn btn-sm rounded-0 btn-primary w-100" data-bs-toggle="modal" data-bs-target="#___"""+str(node.id)+"""">
                             definir comme feuille
                         </button>
                         """
@@ -67,10 +68,39 @@ def node_tohtml(node):
                             </div>
                         </div>
                          """
-    
+    form_modif_noeud = """
+                        <button class="btn btn-sm rounded-0 btn-primary w-100" data-bs-toggle="modal" data-bs-target="#mg__"""+str(node.id)+"""">
+                            modifier
+                        </button>
+                        """
+    modal_modif_noeud = """
+                    <div class="modal fade" id="mg__"""+str(node.id)+"""" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <form action=" """ + reverse('adminin:modif_noeud') + """ " class="m-1" method="get">
+                                        <input type="hidden" name="id" value=" """ + str(node.id) + """ ">
+                                        <div class="form-floating my-1">
+                                            <input type="text" class="form-control rounded-0" name ="nom" value=" """ + node.nom + """ ">
+                                            <label for="nom"> nom du nouveau noeud </label>
+                                        </div>
+                                        <div class="form-floating my-1">
+                                            <input type="text" class="form-control rounded-0" name ="question" value=" """ + node.question + """ ">
+                                            <label for="question"> question du nouveau noeud </label>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary m-1 border-0"><i class="fa fa-trash3"></i>valider</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                """
+
     if(n == 0):
         # on verifie si la feuille a deja ete defini comme feuille
         if len(Feuille.objects.filter(id=node.id)) != 0:
+            ch = reverse('adminin:modifier_feuille_vue',
+                         kwargs={'id_feuille': node.id})
             return (""" <div class="d-flex align-items-center justify-content-between dropdown no-arrow">
                              <div class="btn d-inline-flex align-items-center gap-2">
                                  <i class="fa fa-file"></i> """ + nom + """
@@ -79,13 +109,14 @@ def node_tohtml(node):
                             <a type="button" class="fa fa-ellipsis-v dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                               </a>
                             <ul class="dropdown-menu dropdown-menu-right">
+                              <li class="dropdown-item p-0"><a href=" """+ch+""" " class="btn btn-sm btn-primary w-100">modifier</a></li>
                               <li class="dropdown-item p-0">"""+form_delete+"""</li>
                               <li class="dropdown-item p-0">"""+form_fomat+"""</li>
                             </ul>
                         </div>
-                         </div> """,
-                        """"""
-                )
+                         </div> """.format(ch),
+                    """"""
+                    )
         # construction de la vue d'une noeud terminal
         return (""" <div class="d-flex align-items-center justify-content-between dropdown no-arrow">
                              <div class="btn d-inline-flex align-items-center ">
@@ -97,12 +128,13 @@ def node_tohtml(node):
                             <ul class="dropdown-menu dropdown-menu-right">
                               <li class="dropdown-item p-0">"""+form_delete+"""</li>
                               <li class="dropdown-item p-0">"""+form_add+"""</li>
+                              <li class="dropdown-item p-0">"""+form_modif_noeud+"""</li>
                               <li class="dropdown-item p-0">"""+form_define_feuille+"""</li>
                             </ul>
                         </div>
                          </div> """,
-                         modal_add+modal_define_feuille
-                         )
+                modal_add+modal_define_feuille+modal_modif_noeud
+                )
 
     # contruction du html noeud
     icon = """<i class="fa fa-folder"></i> """ if node.parent != None else """<i class="fa fa-sitemap"></i> """
@@ -118,6 +150,7 @@ def node_tohtml(node):
                     <ul class="dropdown-menu dropdown-menu-right">
                         <li class="dropdown-item p-0">"""+form_delete+"""</li>
                         <li class="dropdown-item p-0">"""+form_add+"""</li>
+                        <li class="dropdown-item p-0">"""+form_modif_noeud+"""</li>
                         <li class="dropdown-item p-0">"""+form_define_feuille+"""</li>
                     </ul>
                 </div>
@@ -126,8 +159,8 @@ def node_tohtml(node):
     # > insertion des enfants
     result += """ <div class="collapse list_node" id="_"""+str(node.id)+"""">
                     <ul class="list-unstyled">"""
-    
-    modals = modal_add+modal_define_feuille
+
+    modals = modal_add+modal_define_feuille+modal_modif_noeud
     for child in children:
         res = node_tohtml(child)
         result += "<li>" + res[0] + "</li>"
@@ -135,6 +168,7 @@ def node_tohtml(node):
     result += "</ul></div></ul>"
 
     return (result, modals)
+
 
 def generate_hierachie():
     trees_visual = ""
