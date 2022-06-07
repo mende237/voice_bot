@@ -29,7 +29,11 @@ def ajouter_information(request):
 
 def view_tree(request):
     hierarchie = generate_hierachie()
-    return render(request, "homeTeacher.html", {'hierarchie': hierarchie , "teacherName" : "null pour le moment"})
+    name =request.session['name']
+    email = request.session['email']
+    image =  Enseignant.objects.get(email = email).image
+    print(image)
+    return render(request, "homeTeacher.html", {'hierarchie': hierarchie , "teacherName" : name , "image":image })
 
 def view_form(request):
     html_form = ""
