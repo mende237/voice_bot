@@ -1,0 +1,33 @@
+{% extends 'baseEnseignant.html' %}
+{% load static %}
+
+{% block corps %}
+<div class="container">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">{{sheet_name}}</legend>
+        <form name="inscription" method="get" action="{% url 'enseignantin:add_info' %}">
+            <table class="table table-hover">
+                <tbody>
+                    {%autoescape off%}
+                        {{html_form}}
+                    {%endautoescape%}
+                    <tr>
+                        <td><label for = "staticEmail" class = "col-sm-2 col-form-label"> Expiration  date</label ></td>
+                        <td><input class="form-control" type = "date" name = "delai" required="required"> </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class = "col-auto" >
+                <button type = "submit" class = "btn btn-primary mb-3" > Confirm </button >
+            </div> 
+        </form>
+    </fieldset>
+</div>
+{% endblock %}
+
+<!-- {% block javascript %}
+    <script>
+        d = document.getElementById('___');
+        d.innerHTML = "{{html_form}}"
+    </script>
+{% endblock %} -->

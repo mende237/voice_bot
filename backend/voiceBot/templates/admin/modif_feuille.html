@@ -103,7 +103,7 @@
             <div class="modal-body">
                 <form action="{% url 'adminin:modif_caracteristique' %}" class="m-1" method="get">
                     <input type="hidden" name="id_feuille" value="{{ id_feuille }}">
-                    <input type="hidden" name="id_car" value="{{ id_car }}">
+                    <input type="hidden" name="id_car" value="{{ car.id }}">
                     <div class="form-floating my-1">
                         <input type="text" class="form-control rounded-0" name="nom" value="{{ car.nom }}">
                         <label for="nom"> nom de la caracteristique </label>
