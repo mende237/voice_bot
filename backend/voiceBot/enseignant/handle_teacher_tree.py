@@ -42,8 +42,6 @@ def node_tohtml(node):
             #                     <input type="hidden" name="id" value=" """ + str(info.id) + """ ">
             #                     <button type="submit" class="w-100 btn btn-primary">modifier</button>
             #                     </form>"""
-                
-            form_delete = form_delete.format(modif = modifier)
             return """ <div class="d-flex align-items-center justify-content-between">
                              <div class="btn d-inline-flex align-items-center gap-2">
                                  <i class="fa fa-file"></i> """ + nom + """

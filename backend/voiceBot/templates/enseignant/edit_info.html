@@ -5,7 +5,7 @@
 <div class="container">
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">{{sheet_name}}</legend>
-        <form name="edit_information" method="get" action="{% url 'enseignantin:view_form_with_default_value' %}">
+        <form name="edit_information" method="get" action="{% url 'enseignantin:update_info' %}">
             <table class="table table-hover">
                 <tbody>
                     {%autoescape off%}
@@ -17,6 +17,8 @@
                     </tr>
                 </tbody>
             </table>
+            <input type = "hidden" name = "nbr_car" value = "{{nbr_car}}">
+            <input type = "hidden" name = "id_info" value = "{{id_info}}">
             <div class = "col-auto" >
                 <button type = "submit" class = "btn btn-primary mb-3" > Confirmer </button >
             </div> 

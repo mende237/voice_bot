@@ -27,21 +27,46 @@ def ajouter_information(request):
 
 def update_information(request):
     email = request.session['email']
-    id = Enseignant.objects.get(email=email).id
-    print(f"l'identifiant est {id}")
-    
-    date = datetime.datetime.strptime(
-        request.GET['delai'], "%Y-%m-%d")
+    id_ens = Enseignant.objects.get(email=email).id
+    print(f"l'identifiant est {id_ens}")
+    id_info = request.GET['id_info']
 
-    enseignant = get_object_or_404(Enseignant, pk=id)
-    info = Information(delai=date, enseignant=enseignant)
-    info.save()
+    info = get_object_or_404(Information, pk=id_info)
+    if info.enseignant_id == id_ens:
+        nbr_car = request.GET['nbr_car']
+        print("le nombre de caracteristique est :" + nbr_car)
+        for i in range(int(nbr_car)):
+            val_car_name = "val_car" + str(i+1)
+            val_car_id = request.GET[val_car_name]
+            type = request.GET["car"+val_car_id]
+            content = request.GET[val_car_id]
+            valeur_caracteristique = get_object_or_404(ValCaracteristique, pk=int(val_car_id))
+            
+            if type == '2':
+                #number
+                valeur_caracteristique.content = int(content)
+            elif type == '3':
+                #reel
+                valeur_caracteristique.content = float(content)
+            elif type == '4':
+                #text
+                valeur_caracteristique.content = content
+            elif type == '1':
+                #date
+                print("date******************************")
+                valeur_caracteristique.content = datetime.datetime.strptime(content, "%Y-%m-%d")
+            else:
+                #time
+                valeur_caracteristique.content = datetime.datetime.strptime(content, "%H-%M-%S")
+                
+        valeur_caracteristique.save()
+        delai = datetime.datetime.strptime(request.GET['delai'], "%Y-%m-%d")
+        info.delai = delai
+        info.save()
+    #un enseignant ne peut pas modifier une information dont ce n'est pas lui l'auteur
+    else:
+        pass
 
-    for r in request.GET:
-        if r != 'delai':
-            val = ValCaracteristique(
-                content=request.GET[r], information=info, caracteristique=get_object_or_404(Caracteristique, pk=int(r)))
-            val.save()
     return redirect('enseignant:view_tree')
 
 def view_tree(request):
@@ -85,14 +110,19 @@ def view_form_with_default_value(request):
 
     val_caracteristiques = ValCaracteristique.objects.filter(
         information_id=id_info)
+    
+    cmpt = 0
     for val_caracterique in val_caracteristiques:
         caracteristiques = Caracteristique.objects.filter(id=val_caracterique.caracteristique_id)
-        html_form += make_input(caracteristiques[0], val_caracterique.content)
+        cmpt = cmpt + 1
+        html_form += make_input(caracteristiques[0], val_caracterique , cmpt)
         
-    return render(request, 'enseignant/edit_info.html', context={"html_form": html_form , "delai": str(delai) , "sheet_name":sheet_name})
+    
+    
+    return render(request, 'enseignant/edit_info.html', context={"html_form": html_form , "delai": str(delai) , "sheet_name":sheet_name , "nbr_car":len(val_caracteristiques) , "id_info":id_info})
 
 
-def make_input(caracteristique , val_caracteristique = None):
+def make_input(caracteristique , val_caracteristique = None , cmpt = 0):
     type = ''
     if caracteristique.type == '2' or caracteristique.type == '3':
         type = 'number'
@@ -109,9 +139,16 @@ def make_input(caracteristique , val_caracteristique = None):
                         <td><input class="form-control" type = "{type}" name = "{str(caracteristique.id)}" required="required"></td>
                     </tr>"""
     else:
+        val_car_name = "val_car" + str(cmpt)
+        print(val_car_name)
+        car_name = "car" + str(val_caracteristique.id)
         result = f"""<tr>
                         <td><label for = "staticEmail" class = "sm-2 form-label">{caracteristique.nom}</label ></td>
-                        <td><input class="form-control" type = "{type}" name = "{str(caracteristique.id)}" value = "{val_caracteristique}" required="required"></td>
+                        <td>
+                            <input type = "hidden" name = "{val_car_name}" value = "{val_caracteristique.id}" >
+                            <input type = "hidden" name = "{car_name}" value = "{caracteristique.type}" >
+                            <input class="form-control" type = "{type}" name = "{val_caracteristique.id}" value = "{val_caracteristique.content}" required="required">
+                        </td>
                     </tr>"""
                     
     return result
