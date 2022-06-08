@@ -1,11 +1,10 @@
-#!/home/dimitri/anaconda3/bin/python3
+#!/home/mbe/Bureau/DS/python/easylocalenv/bin/python3
 
 import conf as cf
 #from modules.asterisk.agi import Agi
 from asterisk.agi import *
 from handle_IVR import handle_IVR , read_message , handle_decision 
 from handle_direct_question import handle_direct_question 
-
 
 
 def greet(agi, welcome_message="bienvenu dans notre programme d'accès à l'information"):
