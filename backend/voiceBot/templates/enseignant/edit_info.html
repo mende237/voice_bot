@@ -1,0 +1,29 @@
+{% extends 'baseEnseignant.html' %}
+{% load static %}
+
+{% block corps %}
+<div class="container">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">{{sheet_name}}</legend>
+        <form name="edit_information" method="get" action="{% url 'enseignantin:update_info' %}">
+            <table class="table table-hover">
+                <tbody>
+                    {%autoescape off%}
+                        {{html_form}}
+                    {%endautoescape%}
+                    <tr>
+                        <td><label for = "staticEmail" class = "col-sm-2 col-form-label">Date d'expiration</label ></td>
+                        <td><input class="form-control" type = "date" name = "delai" value = "{{delai}}" required="required"> </td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type = "hidden" name = "nbr_car" value = "{{nbr_car}}">
+            <input type = "hidden" name = "id_info" value = "{{id_info}}">
+            <div class = "col-auto" >
+                <button type = "submit" class = "btn btn-primary mb-3" > Confirmer </button >
+            </div> 
+        </form>
+    </fieldset>
+</div>
+
+{% endblock %}
